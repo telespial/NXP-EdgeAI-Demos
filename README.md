@@ -27,47 +27,6 @@ This project is designed as a practical "AI watchover" system:
 - External flash recording/replay with timeline controls.
 - Persistent settings on reboot (mode, AI on/off, limits, log rate).
 
-## Hardware Used In This Firmware
-
-Target platform:
-- NXP FRDM-MCXN947
-- LCD-PAR-S035 display
-- ST sensor shield stack used by this demo firmware
-
-### GitHub Hardware Parts List
-
-This repository firmware is written against the following detected/used hardware parts:
-
-- `FRDM-MCXN947` (target MCU board)
-- `LCD-PAR-S035` (display + touch assembly used by UI)
-- ST multi-sensor shield stack (this firmware probes/uses these ST devices):
-  - `LSM6DSO16IS` IMU (accel + gyro primary path)
-  - `LIS2MDL` magnetometer
-  - `LPS22DF` barometer
-  - `STTS22H` temperature sensor
-  - `LSM6DSV16X` IMU WHOAMI fallback probe path
-  - `LIS2DUXS12` probe entries for shield-bus diagnostics
-- `SHT40` (shield-mounted temperature/humidity path)
-- `P3T1755DP` (board temperature path)
-- `W25Q64` class external flash (record/replay storage path used by firmware)
-- `GT911` touch controller path used by UI input handling
-
-ST shield components used by code:
-- `LSM6DSO16IS` (primary IMU): 3-axis accelerometer + 3-axis gyroscope data source for motion channels.
-- `LIS2MDL` (magnetometer): magnetic field channels (`MX/MY/MZ`) for logging and replay evidence.
-- `LPS22DF` (barometer): pressure channel (`baro`) used in telemetry/log records.
-- `STTS22H` (temperature): shield temperature channel used for operator display and logging.
-
-Additional shield-mounted component used by code:
-- `SHT40` (temperature + humidity): auxiliary environmental channel (`SHT temp` + `RH`) in logs/terminal telemetry.
-
-Shield device detection/probe support present in code:
-- `LSM6DSV16X` WHOAMI fallback handling on IMU probe path.
-- `LIS2DUXS12` address probing entries for shield-bus diagnostics.
-
-Board-level component used by code:
-- `P3T1755DP` board temperature sensor path via I3C/I2C fallback.
-
 ## Architecture Summary
 
 The firmware intentionally separates responsibilities:
@@ -94,23 +53,6 @@ python3 tools/import_eil_profile.py \
 Current integration uses:
 - profile alert thresholds -> firmware warning/fault boundaries,
 - profile input weights -> weighted anomaly score computation.
-
-## Planned Derivative: Medical Infusion Pump
-
-Approved transition approach is reuse-first:
-- keep current elapsed-time runtime, sensor streaming, flash rec/play, and live/train/operator control flows,
-- retarget model profile + reason-code semantics to infusion safety use-cases.
-
-Planned supervision scope:
-- motor status anomaly + wear/damage prediction,
-- over/under temperature plus trend-based predictive warnings,
-- activity/context classification (`sleep/sit/stand/walk/run/stairs up/down`),
-- inversion and drop/possible-damage detection.
-
-Model authoring for this derivative is planned through:
-- `projects/microsoft/visual-studio/embedded-intelligence-layer`
-- default bundled template target:
-  - `EdgeAI_Medical_Infusion_Pump_Adaptive_Reasoning_demo_NXP_FRDM-MCXN947.config.json`
 
 ## Build And Flash
 
