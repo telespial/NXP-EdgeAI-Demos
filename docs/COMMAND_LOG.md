@@ -693,3 +693,6 @@ Format:
 - 2026-02-22T00:00:00Z CMD: final pre-commit review (status + diffstat) for docs release + golden cut
 - 2026-02-22T00:00:00Z CMD: git add + commit release/docs/golden update bundle
 - 2026-02-22T00:00:00Z CMD: verify post-commit working tree before push/tag operations
+2026-02-22T17:27:25Z | restore docs to FAILSAFE-ACTIVE and commit baseline restore
+2026-02-22T17:27:41Z | retry commit using git add -A for deleted TEMP_COMBINED_STATE path
+2026-02-22T17:27:48Z | retry commit without explicit missing pathspec; stage docs directory changes
