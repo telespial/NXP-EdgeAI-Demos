@@ -123,3 +123,23 @@ Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 ## 6) Function Reference
 
 - Full runtime function inventory (AI and non-AI): `docs/AI_RUNTIME_REFERENCE.md`.
+
+## 7) Planned Derivative Architecture: Infusion Pump
+
+### 7.1 Reused Runtime Blocks (No Redesign Planned)
+- Main loop scheduling and elapsed-time accumulators.
+- Sensor capture/streaming and frame assembly pipeline.
+- External flash recorder/replay timeline pipeline.
+- UI control model for `TRAIN/LIVE`, `PLAY/RECORD`, modal arbitration, and settings persistence.
+
+### 7.2 New Domain Semantics (Planned)
+- Replace package-domain alert semantics with infusion-device semantics:
+  - motor status anomaly and wear/damage prediction.
+  - thermal limit and trend forecasting (`high soon` / `low soon`).
+  - wearer activity class and confidence.
+  - inversion and drop/impact damage signals.
+
+### 7.3 Model Contract Path (Planned)
+- Profile generation remains extension-driven (`embedded-intelligence-layer`).
+- New default infusion template will be bundled in the extension and imported through existing firmware profile importer.
+- Runtime still enforces deterministic safety gates while model outputs provide predictive watchover and explainable reason codes.

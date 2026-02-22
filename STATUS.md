@@ -28,6 +28,7 @@ Last updated: 2026-02-22
 - Latest recorder cadence update: PASS (`LOG HZ` now drives flash record cadence at `1/5/10/20/30/40/50 Hz`, 2026-02-22)
 - Latest settings control fix: PASS (`LOG HZ` now shows explicit down/up arrow icons, 2026-02-22)
 - Latest help/font fix: PASS (missing help characters resolved by complete 5x7 alphabet mapping including `J`/`Q`, 2026-02-22)
+- Latest derivative planning update: PASS (approved infusion-pump transition plan documented with reuse-first architecture and EIL template path, 2026-02-22)
 
 ## UI Control Scope (Updated)
 - AI enable/disable is settings-only.

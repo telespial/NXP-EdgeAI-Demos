@@ -3,31 +3,56 @@
 Last updated: 2026-02-22
 Project: `EdgeAI_Package_Transport_Adaptive_Reasoning_demo_NXP_FRDM-MCXN947`
 
-## Priority 0 (Release Hygiene)
-- [ ] Keep `STATUS.md`, `docs/PROJECT_STATE.md`, and restore docs synchronized on every golden cut.
-- [ ] Keep command trace complete in `docs/COMMAND_LOG.md` for every build/flash/release action.
-- [ ] Verify `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin` boots and reaches UI before tagging release.
+## Priority 0 (Derivative Scope Lock: Infusion Pump)
+- [ ] Freeze reuse baseline for unchanged runtime blocks:
+  - elapsed-time scheduler
+  - sensor streaming pipeline
+  - flash record/playback and timeline controls
+  - live/train/operator flow and settings persistence
+- [ ] Define infusion-pump safety state contract (`NORMAL`/`WARNING`/`FAULT`) with deterministic preemption rules.
+- [ ] Freeze initial reason-code set for:
+  - motor anomaly
+  - predicted motor wear/damage
+  - over/under temperature and thermal-trend risk
+  - activity class and confidence
+  - inversion and drop/damage events
 
-## Priority 1 (Runtime Validation)
-- [ ] Run end-to-end record/replay test at `1 Hz`, `10 Hz`, and `50 Hz` to verify flash cadence follows `LOG HZ`.
-- [ ] Capture UART evidence showing persisted `AS/RC/SC` fields during short transient warnings.
-- [ ] Validate help popup on hardware for full alphabet render (A-Z) across both pages.
-- [ ] Confirm settings persistence after power cycle: mode, run, AI, limits, log rate.
+## Priority 1 (Model Contract + EIL Extension Integration)
+- [ ] Create infusion-pump default model template in EIL extension:
+  - `EdgeAI_Medical_Infusion_Pump_Adaptive_Reasoning_demo_NXP_FRDM-MCXN947.config.json`
+- [ ] Include infusion-focused inputs:
+  - motor channels (`rpm`, `current`, `step_error`, `load_proxy`)
+  - thermal channels (`temp_c`, `temp_slope_c_per_min`, `ambient_c`)
+  - motion channels (`accel`, `gyro`, `baro_delta`, `inverted_flag`, `drop_event`)
+  - activity channels (`sleep/sit/stand/walk/run/stairs_up/stairs_down`)
+- [ ] Keep threshold and reason-code mapping export-compatible with existing firmware import path (`tools/import_eil_profile.py`).
 
-## Priority 2 (Data/Forensics)
-- [ ] Add explicit UART flash dump command output with signed fields and timestamp (`ts_ds`) for quick audit.
-- [ ] Save one known-good capture bundle:
-  - config/profile used
-  - UART log
-  - flash dump sample
-  - expected warning sequence
-- [ ] Document retention expectations by log rate using measured sample counts.
+## Priority 2 (Firmware Transition Plan, Reuse First)
+- [ ] Add infusion-pump feature extraction layer without replacing base runtime plumbing.
+- [ ] Implement motor-health logic:
+  - anomaly detection
+  - wear trend prediction
+  - warning/fault transitions
+- [ ] Implement thermal trend prediction:
+  - approach-to-limit warning
+  - over/under fault boundaries
+- [ ] Implement wearable-context logic:
+  - activity classification
+  - inversion detection
+  - drop/possible-damage detection
 
-## Priority 3 (UX Polish)
-- [ ] Keep settings/help text concise and font-safe for the 5x7 renderer.
-- [ ] Re-check popup layouts after any text edits (no overlap, no clipping, no stale artifacts).
-- [ ] Keep touch targets consistent for all up/down and confirm buttons.
+## Priority 3 (Verification + Evidence)
+- [ ] Run replay validation set with expected reason-code timelines for:
+  - normal infusion
+  - early motor wear drift
+  - motor fault event
+  - temp rise/fall trend breach
+  - inversion event
+  - drop impact and post-impact behavior
+- [ ] Capture UART + flash evidence for each scenario (`AS/RC/SC` + `ts_ds`).
+- [ ] Confirm recorder cadence correctness at `1/10/50 Hz` for infusion profile.
 
-## Deferred (Post v0.1)
-- [ ] Additional demo profiles in extension and firmware import path.
-- [ ] Deeper training workflow automation and packaged validation scripts.
+## Priority 4 (Release Hygiene)
+- [ ] Keep `STATUS.md`, `docs/PROJECT_STATE.md`, restore docs, and command log synchronized for every milestone.
+- [ ] Verify active failsafe image still boots and reaches UI before release cut.
+- [ ] Publish milestone notes mapping package-transport baseline to infusion-pump derivative state.

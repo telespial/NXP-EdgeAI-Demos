@@ -95,6 +95,23 @@ Current integration uses:
 - profile alert thresholds -> firmware warning/fault boundaries,
 - profile input weights -> weighted anomaly score computation.
 
+## Planned Derivative: Medical Infusion Pump
+
+Approved transition approach is reuse-first:
+- keep current elapsed-time runtime, sensor streaming, flash rec/play, and live/train/operator control flows,
+- retarget model profile + reason-code semantics to infusion safety use-cases.
+
+Planned supervision scope:
+- motor status anomaly + wear/damage prediction,
+- over/under temperature plus trend-based predictive warnings,
+- activity/context classification (`sleep/sit/stand/walk/run/stairs up/down`),
+- inversion and drop/possible-damage detection.
+
+Model authoring for this derivative is planned through:
+- `projects/microsoft/visual-studio/embedded-intelligence-layer`
+- default bundled template target:
+  - `EdgeAI_Medical_Infusion_Pump_Adaptive_Reasoning_demo_NXP_FRDM-MCXN947.config.json`
+
 ## Build And Flash
 
 ```bash

@@ -1,78 +1,46 @@
 # Temporary Combined State
 
 Last updated: 2026-02-22
-Scope: consolidated view of `docs/PROJECT_STATE.md`, `docs/SYSTEM_DESIGN.md`, `docs/AI_RUNTIME_REFERENCE.md`, and `STATUS.md`.
+Scope: consolidated transition brief for evolving the package-transport runtime into an infusion-pump derivative while retaining validated platform infrastructure.
 
 ## Executive Snapshot
-- Build: PASS (`frdmmcxn947/cm33_core0`, app `edgeai_package_transport_anomaly_demo`)
-- Flash: PASS in current session (probe `2PZWMSBKUXU22`)
+- Current build/flash baseline: PASS (`frdmmcxn947/cm33_core0`, app `edgeai_package_transport_anomaly_demo`)
 - Golden baseline: `GOLDEN-20260222-152829`
-- Active failsafe: `FAILSAFE-ACTIVE`
-- Key output: stable live/train workflow with persistent settings, alert prioritization, and flash-backed event logging.
+- Active failsafe: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
+- Transition direction: reuse core runtime and replace domain profile + decision semantics for medical infusion safety supervision.
 
-## Current Runtime Intent
-This firmware implements an embedded intelligence supervisor on top of deterministic host sensing logic:
-- Host firmware remains the source of truth for sensor acquisition and safety-critical baseline rules.
-- AI/anomaly layer adds predictive/watchover behavior (drift, trend, anomaly score, reasoned alerts).
-- Operator-facing states and logs are explainable (`NORMAL`, `WARNING`, `FAULT` + reason code + score).
+## Reuse-First Architecture Decision
+The following firmware blocks remain foundational and should not be rewritten for the derivative:
+- elapsed-time scheduler and cooperative tick cadence
+- sensor data ingestion and streaming framework
+- external flash record/playback pipeline and timeline controls
+- live/train/operator state machine and persistent settings model
+- alert visibility hold and priority arbitration mechanics
 
-## Architecture (Condensed)
-- Sensor ingest: accel/gyro/mag/temp/baro inputs sampled in host firmware.
-- Preprocess:
-  - accel/gyro/mag buffered at 100 Hz and reduced by interval peak for log cadence.
-  - temp/baro sampled directly (no peak buffering).
-- Decision paths:
-  - deterministic limit checks (G, gyro, temp high/low)
-  - anomaly score and predictive checks (tilt/inversion, temperature approach, erratic motion)
-- Arbitration:
-  - canonical `ai_status` drives displayed/recorded status.
-  - severity priority: `FAULT` > `WARNING` > `NORMAL`.
-  - visibility hold: warning ~5s, fault ~8s.
-- Persistence/logging:
-  - settings persisted to external flash metadata.
-  - event rows persist timestamp + sensor snapshot + status/reason/score.
+This preserves verified timing and operational behavior while minimizing regression surface.
 
-## Operator Workflow (Current)
-- `ADAPT` / `TRAINED` selects adaptation policy behavior.
-- `TRAIN` / `LIVE` selects run mode.
-- Recording behavior:
-  - train mode no longer auto-records.
-  - `RECORD` starts capture after confirmation.
-  - during recording, timeline control switches to blue `STOP` with confirmation.
-- Settings include:
-  - AI ON/OFF (settings-only control, not main-screen touch)
-  - limits (G warn/fail, gyro warn/fail, temp low/high)
-  - log rate (`1/5/10/20/30/40/50 Hz`)
-  - clear flash with confirmation
+## Infusion-Pump Derivative Target (Planned)
+Primary outcomes:
+- motor status supervision with anomaly scoring and predicted wear/damage risk
+- over/under temperature detection plus predictive trend warning
+- wearable motion context (sleep/sit/stand/walk/run/stairs up/down using barometric trend)
+- inversion detection from gyro/orientation channels
+- drop/impact detection with possible-damage escalation path
 
-## Alert Model (AI + Non-AI)
-- Non-AI (deterministic):
-  - threshold/range limit warnings and faults from configured limits.
-- AI/predictive layer:
-  - anomaly score based escalation (configured warn/fail thresholds)
-  - predictive warning reasons:
-    - `INVERTED`
-    - `TILTED`
-    - `TEMP LOW SOON`
-    - `TEMP HIGH SOON`
-    - `ERRATIC MOTION`
-- Screen behavior:
-  - severe alerts preempt lower severity even while hold timers are active.
-  - normal-tracking state shown clearly when no active warning/fault override exists.
+## EIL Model Strategy (Planned)
+Model authoring path:
+- build model profile in `embedded-intelligence-layer`
+- set infusion template as bundled default:
+  - `EdgeAI_Medical_Infusion_Pump_Adaptive_Reasoning_demo_NXP_FRDM-MCXN947.config.json`
+- export/import via existing profile flow:
+  - extension export package -> `tools/import_eil_profile.py` -> `src/eil_profile_generated.h`
 
-## Integration with Generated Model Profile
-- EIL profile import path exists in firmware (`src/eil_profile.*` + generated header).
-- Imported profile constants can drive weighted score and alert thresholds.
-- Current project state is integration-ready and already using profile-driven knobs for anomaly status logic.
+Integration contract:
+- firmware continues deterministic authority for safety gating
+- model contributes explainable predictive/watchover signals via `status + reason code + score`
 
-## What Is Verified
-- Build and flash pass.
-- UI/settings persistence pass.
-- Recorder/playback path pass.
-- Alert hold/priority behavior pass.
-- Gyro mapping and telemetry source path fixed and verified in latest notes.
-- Help popup and font path now render full alphabet (`J`/`Q` added and lowercase normalized in 5x7 map).
-- `LOG HZ` controls now use explicit arrow icons and flash record cadence is tied to selected `LOG HZ`.
-
-## Open Validation Item (Recommended Next)
-- Add a dedicated UART flash-dump line containing explicit signed values + timestamp fields for one-click post-run integrity checks, then capture a short train/live session and archive as a validation artifact.
+## Planned Validation Evidence
+- replay scenario matrix covering normal, wear drift, thermal drift, inversion, and drop events
+- UART and flash evidence bundles with timestamped `AS/RC/SC` fields
+- log-cadence checks at `1/10/50 Hz`
+- release gates tied to failsafe boot verification and synchronized state docs

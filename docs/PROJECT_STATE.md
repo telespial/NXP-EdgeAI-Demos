@@ -1579,3 +1579,22 @@ Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 - Verification:
   - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
   - `./tools/flash_frdmmcxn947.sh mcuxsdk_ws/build_adaptive_reasoning/edgeai_package_transport_anomaly_demo_cm33_core0.bin` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Infusion Pump Derivative Planning Baseline)
+- Added approved transition plan to reuse validated runtime infrastructure from package transport demo:
+  - elapsed-time scheduler
+  - sensor stream/frame pipeline
+  - flash record/playback/live workflow
+  - operator-state and settings persistence model
+- Documented new derivative scope for medical infusion supervision:
+  - motor anomaly + wear/damage prediction
+  - over/under temperature with trend prediction
+  - wearer activity class and confidence
+  - inversion and drop/possible-damage events
+- Aligned model-authoring path to extension workflow in `embedded-intelligence-layer` and planned default infusion template integration.
+- Updated documentation artifacts:
+  - `docs/TODO.md`
+  - `docs/TEMP_COMBINED_STATE.md`
+  - `docs/SYSTEM_DESIGN.md`
+  - `README.md`
+- Result: planning baseline approved and documented.
