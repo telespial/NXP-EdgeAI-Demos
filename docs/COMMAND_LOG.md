@@ -696,3 +696,22 @@ Format:
 2026-02-22T17:27:25Z | restore docs to FAILSAFE-ACTIVE and commit baseline restore
 2026-02-22T17:27:41Z | retry commit using git add -A for deleted TEMP_COMBINED_STATE path
 2026-02-22T17:27:48Z | retry commit without explicit missing pathspec; stage docs directory changes
+| 2026-02-23 07:49:05 PST | `build package demo via tools/build_frdmmcxn947.sh debug` | success |
+| 2026-02-23 07:49:09 PST | `flash package demo via tools/flash_frdmmcxn947.sh` | success |
+| 2026-02-23 07:49:18 PST | `update package PROJECT_STATE after build+flash` | success |
+| 2026-02-23 07:52:57 PST | `check git status in medical and package before edits` | success |
+| 2026-02-23 07:53:08 PST | `inspect package script layout and build-and-flash scripts` | success |
+| 2026-02-23 07:53:59 PST | `inspect medical scripts/flash.sh and build_and_flash.sh for accurate patching` | success |
+| 2026-02-23 07:54:35 PST | `chmod new flash_safe scripts and run bash -n syntax checks` | success |
+| 2026-02-23 07:55:10 PST | `verify package flash fail-fast blocks mismatched medical build artifacts` | success |
+| 2026-02-23 07:55:22 PST | `inspect OPS_RUNBOOK flash sections for medical and package` | success |
+| 2026-02-23 07:55:43 PST | `update PROJECT_STATE entries for flash-safe guards and CGM simulation help note` | success |
+| 2026-02-23 07:55:54 PST | `verify flash-safe and help-note changes plus repo status` | success |
+| 2026-02-23 08:09:05 PST | `inspect package STATUS and current git status before restore-point stamp` | success |
+| 2026-02-23 08:09:05 PST | `inspect package git remotes and branch` | success |
+| 2026-02-23 08:09:17 PST | `inspect restore-point docs/files in package repo` | success |
+| 2026-02-23 08:16:48 PST | `inspect package file permissions/state after failed restore-point update attempt` | fail (previous update command failed due quoting) |
+| 2026-02-23 08:17:50 PST | `append package PROJECT_STATE update for GOLDEN-20260223-161638 failsafe cut` | success |
+| 2026-02-23 08:17:58 PST | `verify package restore-point files and capture git status before commit` | success |
+| 2026-02-23 08:18:07 PST | `compute sha256 for current package build/golden/failsafe binaries` | success |
+| 2026-02-23 08:18:07 PST | `rewrite failsafe/README_GOLDEN.txt with new golden/failsafe tags` | success |

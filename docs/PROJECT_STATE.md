@@ -1,14 +1,14 @@
 # Project State
 
-Last updated: 2026-02-22
+Last updated: 2026-02-23
 Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 
 ## Current Baseline
 - Lifecycle: initialized
 - App target: `edgeai_package_transport_anomaly_demo`
 - Build target: `frdmmcxn947` / `cm33_core0`
-- Golden tag: `GOLDEN-20260222-045031`
-- Lock tag: `FAILSAFE-ACTIVE`
+- Golden tag: `GOLDEN-20260223-161638`
+- Lock tag: `FAILSAFE-20260223-161638`
 - Failsafe binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
 
 ## Update 2026-02-22 (Documentation Expansion: AI + System Functions)
@@ -1400,3 +1400,33 @@ Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 - Verification:
   - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
   - `./tools/flash_frdmmcxn947.sh mcuxsdk_ws/build_adaptive_reasoning/edgeai_package_transport_anomaly_demo_cm33_core0.bin` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-23
+- Change: Built and flashed current package demo firmware.
+- Verification:
+  - `./tools/build_frdmmcxn947.sh debug` PASS
+  - `./tools/flash_frdmmcxn947.sh` PASS
+- Result: ok
+
+## Update 2026-02-23
+- Change: Added flash fail-fast guard and safe wrapper for package demo.
+  - `tools/flash_frdmmcxn947.sh` now blocks flash if expected package artifact is missing or build dir app path does not match project
+  - new wrapper: `tools/flash_safe.sh`
+- Verification:
+  - mismatch safety test PASS (intentionally pointed package flash wrapper at medical build dir; flash was blocked before west flash)
+- Result: ok
+
+## Update 2026-02-23 (Golden/Failsafe Refresh: GOLDEN-20260223-161638)
+- Cut a new timestamped golden artifact and promoted active failsafe from current validated build output.
+  - golden tag: `GOLDEN-20260223-161638`
+  - failsafe tag: `FAILSAFE-20260223-161638`
+  - golden binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260223T161638Z.bin`
+  - failsafe active: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
+  - sha256: `2304af425c539cc63ddd56a6e0166c1697f43d1f1c0b744bf32be32ff8b78bd3`
+- Synchronized restore metadata in:
+  - `docs/START_HERE.md`
+  - `docs/RESTORE_POINTS.md`
+  - `docs/failsafe.md`
+  - `failsafe/README_GOLDEN.txt`
+  - `STATUS.md`
+- Result: ok
