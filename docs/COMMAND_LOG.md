@@ -693,25 +693,209 @@ Format:
 - 2026-02-22T00:00:00Z CMD: final pre-commit review (status + diffstat) for docs release + golden cut
 - 2026-02-22T00:00:00Z CMD: git add + commit release/docs/golden update bundle
 - 2026-02-22T00:00:00Z CMD: verify post-commit working tree before push/tag operations
-2026-02-22T17:27:25Z | restore docs to FAILSAFE-ACTIVE and commit baseline restore
-2026-02-22T17:27:41Z | retry commit using git add -A for deleted TEMP_COMBINED_STATE path
-2026-02-22T17:27:48Z | retry commit without explicit missing pathspec; stage docs directory changes
-| 2026-02-23 07:49:05 PST | `build package demo via tools/build_frdmmcxn947.sh debug` | success |
-| 2026-02-23 07:49:09 PST | `flash package demo via tools/flash_frdmmcxn947.sh` | success |
-| 2026-02-23 07:49:18 PST | `update package PROJECT_STATE after build+flash` | success |
-| 2026-02-23 07:52:57 PST | `check git status in medical and package before edits` | success |
-| 2026-02-23 07:53:08 PST | `inspect package script layout and build-and-flash scripts` | success |
-| 2026-02-23 07:53:59 PST | `inspect medical scripts/flash.sh and build_and_flash.sh for accurate patching` | success |
-| 2026-02-23 07:54:35 PST | `chmod new flash_safe scripts and run bash -n syntax checks` | success |
-| 2026-02-23 07:55:10 PST | `verify package flash fail-fast blocks mismatched medical build artifacts` | success |
-| 2026-02-23 07:55:22 PST | `inspect OPS_RUNBOOK flash sections for medical and package` | success |
-| 2026-02-23 07:55:43 PST | `update PROJECT_STATE entries for flash-safe guards and CGM simulation help note` | success |
-| 2026-02-23 07:55:54 PST | `verify flash-safe and help-note changes plus repo status` | success |
-| 2026-02-23 08:09:05 PST | `inspect package STATUS and current git status before restore-point stamp` | success |
-| 2026-02-23 08:09:05 PST | `inspect package git remotes and branch` | success |
-| 2026-02-23 08:09:17 PST | `inspect restore-point docs/files in package repo` | success |
-| 2026-02-23 08:16:48 PST | `inspect package file permissions/state after failed restore-point update attempt` | fail (previous update command failed due quoting) |
-| 2026-02-23 08:17:50 PST | `append package PROJECT_STATE update for GOLDEN-20260223-161638 failsafe cut` | success |
-| 2026-02-23 08:17:58 PST | `verify package restore-point files and capture git status before commit` | success |
-| 2026-02-23 08:18:07 PST | `compute sha256 for current package build/golden/failsafe binaries` | success |
-| 2026-02-23 08:18:07 PST | `rewrite failsafe/README_GOLDEN.txt with new golden/failsafe tags` | success |
+- 2026-02-22T00:00:00Z CMD: tag GOLDEN-20260222-045031 + FAILSAFE-ACTIVE and push main/tags to origin
+- 2026-02-22T00:00:00Z CMD: commit and push final command-log sync after release tagging
+- 2026-02-22T00:00:00Z CMD: inspect UART capture scripts for flash-read validation approach
+- 2026-02-22T00:00:00Z CMD: inspect recent capture artifacts
+- 2026-02-22T00:00:00Z CMD: raw UART capture for flash replay validation (LOG/AS/RC/SC + timestamps)
+- 2026-02-22T00:00:00Z CMD: inspect LOG printf format and argument types after UART capture anomaly
+- 2026-02-22T00:00:00Z CMD: fix UART LOG signed formatting (%ld) then build+flash for flash-data validation readability
+- 2026-02-22T00:00:00Z CMD: verify UART signed field readability after LOG format fix
+- 2026-02-22T00:00:00Z CMD: revert unsupported %ld LOG format to %d and rebuild+flash
+2026-02-22T14:30:23Z | cmd: pwd && ls -la | note: verified workspace root from /home/user/python_projects
+2026-02-22T14:30:23Z | cmd: ls -la docs && ls -la | note: verified required docs and repo files present
+2026-02-22T14:30:34Z | cmd: sed -n '1,80p' docs/PROJECT_STATE.md | note: captured current project state header and latest updates
+2026-02-22T14:30:34Z | cmd: sed -n '1,120p' STATUS.md | note: captured current status summary for temp combined doc
+2026-02-22T14:31:03Z | edit: added docs/TEMP_COMBINED_STATE.md | note: temporary consolidated state brief across PROJECT_STATE/SYSTEM_DESIGN/AI_RUNTIME_REFERENCE/STATUS
+2026-02-22T14:31:03Z | edit: updated docs/PROJECT_STATE.md | note: recorded temp combined-state doc addition per project rule
+2026-02-22T14:38:17Z | cmd: rg -n 'shiftWarn|shiftFail|breakFail|hyster|hysteresis|persistence|adapt|warning|fault|anomaly' src/edgeai_package_transport_anomaly_demo.c src/*.h | note: located alert/adapt logic sites
+2026-02-22T14:38:17Z | cmd: tail -n 1 docs/COMMAND_LOG.md | note: confirmed latest command log baseline before edits
+2026-02-22T14:38:28Z | cmd: sed -n '500,860p' src/edgeai_package_transport_anomaly_demo.c | note: inspected ApplyAnomalyToFrame alert logic
+2026-02-22T14:38:28Z | cmd: sed -n '1,280p' src/anomaly_engine.c | note: reviewed anomaly engine baseline/adapt internals
+2026-02-22T14:38:28Z | cmd: sed -n '1,220p' src/eil_profile_generated.h | note: checked current score warn/fail thresholds and weights
+2026-02-22T14:38:38Z | cmd: rg -n 'AnomalyEngine_Push|AnomalyEngine_GetOutput|training_active|SetMode|SetTune|TRAINED|ADAPT|LIVE' src/edgeai_package_transport_anomaly_demo.c src/anomaly_engine.c src/anomaly_engine.h | note: found update loop and mode control hooks
+2026-02-22T14:38:38Z | cmd: sed -n '280,520p' src/anomaly_engine.c | note: inspected adaptive baseline update behavior for freeze strategy
+2026-02-22T14:38:55Z | cmd: rg -n 'ApplyAnomalyToFrame|GetFrameSample|ai_status|alert_reason_code|AnomalyEngine_Update\(' src/edgeai_package_transport_anomaly_demo.c | note: located frame-level alert application call graph
+2026-02-22T14:38:55Z | cmd: sed -n '860,980p' src/edgeai_package_transport_anomaly_demo.c | note: reviewed timebase helpers used by persistence timers
+2026-02-22T14:39:02Z | cmd: sed -n '1,180p' src/anomaly_engine.h | note: inspected anomaly engine API for adding adaptive freeze control
+2026-02-22T14:39:19Z | cmd: sed -n '500,840p' src/edgeai_package_transport_anomaly_demo.c | note: captured current ApplyAnomalyToFrame block for persistence/hysteresis patch
+2026-02-22T14:40:25Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug | result: PASS | note: added warning persistence+hysteresis and adaptive-freeze logic
+2026-02-22T14:40:45Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh | result: PASS | probe: 2PZWMSBKUXU22
+2026-02-22T14:40:59Z | edit: updated docs/PROJECT_STATE.md | note: documented anti-chatter persistence/hysteresis + adaptive-freeze tuning and pass build/flash
+2026-02-22T14:41:09Z | cmd: git status --short | note: captured changed files after tuning implementation
+2026-02-22T14:41:09Z | cmd: nl -ba src/anomaly_engine.h | sed -n '45,95p' | note: collected API line refs for adaptive freeze
+2026-02-22T14:41:09Z | cmd: nl -ba src/anomaly_engine.c | sed -n '30,120p' && sed -n '390,480p' | note: collected state/logic line refs for adaptive freeze
+2026-02-22T14:41:17Z | cmd: nl -ba src/edgeai_package_transport_anomaly_demo.c | sed -n '520,900p' && nl -ba src/eil_profile_generated.h | sed -n '1,40p' && nl -ba docs/PROJECT_STATE.md | sed -n '1,60p' | note: captured line refs for final summary
+2026-02-22T14:41:27Z | cmd: nl -ba src/edgeai_package_transport_anomaly_demo.c | sed -n '900,950p' | note: verified adaptive-freeze call site line refs
+2026-02-22T14:43:03Z | edit: updated src/edgeai_package_transport_anomaly_demo.c | note: retuned tilt threshold/dynamics gate and added impact latch + fast impact persistence
+2026-02-22T14:43:12Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug | result: PASS | note: retuned tilt filter and impact latch behavior
+2026-02-22T14:43:33Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh | result: PASS | probe: 2PZWMSBKUXU22
+2026-02-22T14:43:33Z | edit: updated docs/PROJECT_STATE.md | note: documented tilt-vs-impact retune and verification
+2026-02-22T14:44:38Z | edit: updated src/edgeai_package_transport_anomaly_demo.c | note: made erratic-impact warning immediate and extended impact latch to 800ms
+2026-02-22T14:44:46Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug | result: PASS | note: impact warning now immediate with longer latch
+2026-02-22T14:45:09Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh | result: PASS | probe: 2PZWMSBKUXU22
+2026-02-22T14:45:09Z | edit: updated docs/PROJECT_STATE.md | note: documented immediate impact warning maturation + 800ms latch
+2026-02-22T14:46:44Z | cmd: rg -n 'accel_peak|peak_window|s_accel_.*peak|SetAccel|horizon|sphere|gyro sphere|DrawSphere|horizon' src/edgeai_package_transport_anomaly_demo.c src/gauge_render.c src/*.h | note: located accel-peak and sphere horizon render paths
+2026-02-22T14:46:44Z | cmd: tail -n 2 docs/COMMAND_LOG.md | note: verified command log baseline before patch
+2026-02-22T14:47:01Z | cmd: sed -n '200,480p' src/edgeai_package_transport_anomaly_demo.c | note: reviewed signal peak window producer/consumer functions
+2026-02-22T14:47:01Z | cmd: sed -n '840,1120p' src/gauge_render.c | note: reviewed gyro sphere dynamic horizon draw path
+2026-02-22T14:47:01Z | cmd: sed -n '2170,2335p' src/gauge_render.c | note: reviewed static draw layering and accel setter path
+2026-02-22T14:47:42Z | edit: updated src/edgeai_package_transport_anomaly_demo.c | note: alert accel peak now uses buffered log/capture windows to match graphed spikes
+2026-02-22T14:47:42Z | edit: updated src/gauge_render.c | note: sphere horizon now uses last valid accel attitude to prevent disappear/reappear flicker
+2026-02-22T14:47:53Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug | result: PASS | note: alert peak and horizon stability fixes compiled
+2026-02-22T14:48:15Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh | result: PASS | probe: 2PZWMSBKUXU22
+2026-02-22T14:48:15Z | edit: updated docs/PROJECT_STATE.md | note: documented accel-spike alert sync and sphere horizon stability fix
+2026-02-22T14:50:04Z | cmd: rg -n 'filt_x|filt_y|filt_ax|filt_ay|s_accel_x_mg =|s_accel_y_mg =' src/edgeai_package_transport_anomaly_demo.c | note: investigating accel assignment anomalies
+2026-02-22T14:50:11Z | cmd: sed -n '4040,4375p' src/edgeai_package_transport_anomaly_demo.c | note: tracing live loop sensor->graph->warning feed
+2026-02-22T14:50:20Z | cmd: sed -n '2880,3025p' src/edgeai_package_transport_anomaly_demo.c && rg -n 'AddSample|Trace|Scope|SetTrace|Push.*Sample|GaugeRender_.*Sample' src/edgeai_package_transport_anomaly_demo.c src/gauge_render.c | note: tracing graph data feed path
+2026-02-22T14:50:23Z | cmd: sed -n '500,620p' src/gauge_render.c | note: inspect scope sample source channels for accel traces
+2026-02-22T14:50:32Z | cmd: sed -n '1968,2078p' src/gauge_render.c | note: verify scope draw includes accel traces and colors
+2026-02-22T14:50:40Z | cmd: sed -n '2470,2635p' src/gauge_render.c | note: inspect PushScopeSample call conditions in frame draw
+2026-02-22T14:50:56Z | cmd: sed -n '100,190p' src/edgeai_package_transport_anomaly_demo.c | note: inspect accel globals for introducing raw accel channel
+2026-02-22T14:52:11Z | edit: updated src/edgeai_package_transport_anomaly_demo.c | note: added raw accel channels, switched alert peak windows to raw accel, and fed scope linear accel from raw path
+2026-02-22T14:52:23Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug | result: PASS | note: raw accel path wiring for graph+bang warnings
+2026-02-22T14:52:47Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh | result: PASS | probe: 2PZWMSBKUXU22
+2026-02-22T14:52:47Z | edit: updated docs/PROJECT_STATE.md | note: documented raw accel path fix for scope and bang alerts
+2026-02-22T14:57:21Z | cmd: sed -n '470,560p' src/edgeai_package_transport_anomaly_demo.c | note: inspect ChannelLevelPct and warning hold behavior for sticky shift
+2026-02-22T14:57:42Z | edit: updated src/edgeai_package_transport_anomaly_demo.c | note: reduced watch/minor/major score mapping and fixed warning hold refresh to avoid sticky SHIFT
+2026-02-22T14:57:50Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug | result: PASS | note: warning decay fix for BREAK->SHIFT stuck state
+2026-02-22T14:58:12Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh | result: PASS | probe: 2PZWMSBKUXU22
+2026-02-22T14:58:12Z | edit: updated docs/PROJECT_STATE.md | note: documented post-impact warning decay fix (BREAK->SHIFT stuck)
+2026-02-22T15:11:10Z | cmd: rg -n 'ANOMALY_WATCH|overall_level|adaptive_freeze|hold_warn_ticks|ApplyAnomalyToFrame' src/edgeai_package_transport_anomaly_demo.c src/anomaly_engine.c | note: traced watch-warning persistence path
+2026-02-22T15:11:10Z | cmd: tail -n 3 docs/COMMAND_LOG.md | note: checked command-log baseline before patch
+2026-02-22T15:11:31Z | cmd: sed -n '800,910p' src/edgeai_package_transport_anomaly_demo.c | note: inspected candidate-status and watch branch before rest-state fix
+2026-02-22T15:11:31Z | edit: updated src/edgeai_package_transport_anomaly_demo.c | note: gate ANOMALY_WATCH warnings by active motion evidence so rest state returns to normal
+2026-02-22T15:11:45Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug | result: PASS | note: watch-warning rest-state decay gate
+2026-02-22T15:12:07Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh | result: PASS | probe: 2PZWMSBKUXU22
+2026-02-22T15:12:07Z | edit: updated docs/PROJECT_STATE.md | note: documented ANOMALY_WATCH rest-state recovery gate
+2026-02-22T15:14:17Z | cmd: rg -n 's_log_rate_hz|LOG HZ|log_period_us|RECPLAY_TICK_PERIOD_US|AppendSampleEx' src/edgeai_package_transport_anomaly_demo.c | note: verified whether log rate affects flash record cadence
+- 2026-02-22 07:19:54 | inspect rec/play and alert-capture paths in src/edgeai_package_transport_anomaly_demo.c (rg/sed) | prepared patch plan for log-rate-coupled flash recording and buffered warning capture
+- 2026-02-22 07:20:13 | patch src/edgeai_package_transport_anomaly_demo.c | wired rec/play flash cadence to ClampLogRateHz(s_log_rate_hz) with dynamic recplay_period_us and while-loop catch-up
+- 2026-02-22 07:20:13 | ./tools/build_frdmmcxn947.sh | PASS after LOG HZ flash-rate + alert-capture-window write-path integration
+- 2026-02-22 07:20:35 | ./tools/flash_frdmmcxn947.sh | PASS after LOG HZ recorder-cadence patch (probe 2PZWMSBKUXU22)
+- 2026-02-22 07:20:35 | update docs/PROJECT_STATE.md | documented dynamic flash record cadence tied to LOG HZ and buffered alert capture persistence
+- 2026-02-22 07:20:41 | git status --short + git diff (source/state) | verified final change set for LOG HZ -> flash cadence update
+- 2026-02-22 07:21:24 | rg settings/log-hz controls in gauge_render + demo source | investigate missing up/down icons on LOG HZ setting
+- 2026-02-22 07:21:56 | patch src/gauge_render.c | replaced LOG HZ +/- text with drawn down/up arrow icons in settings popup
+- 2026-02-22 07:21:56 | ./tools/build_frdmmcxn947.sh | validate LOG HZ arrow icon render change compiles
+- 2026-02-22 07:22:05 | ./tools/flash_frdmmcxn947.sh | flashed build with LOG HZ up/down icon rendering fix
+- 2026-02-22 07:22:28 | update docs/PROJECT_STATE.md | documented LOG HZ settings up/down icon restoration and verification
+- 2026-02-22 07:22:28 | git diff -- src/gauge_render.c docs/PROJECT_STATE.md | final verification for LOG HZ icon fix deliverable
+- 2026-02-22 07:22:42 | inspect DrawHelpPopup strings in src/gauge_render.c | investigate missing characters across help pages
+- 2026-02-22 07:23:22 | patch src/gauge_render.c DrawHelpPopup text | replaced symbol heavy help strings with plain ASCII wording to avoid missing glyphs
+- 2026-02-22 07:23:22 | ./tools/build_frdmmcxn947.sh && ./tools/flash_frdmmcxn947.sh | built and flashed help text rendering fix
+- 2026-02-22 07:23:50 | update docs/PROJECT_STATE.md | documented help popup missing-character render fix and verification
+- 2026-02-22 07:23:50 | git diff -- src/gauge_render.c docs/PROJECT_STATE.md | verify final help text patch contents
+- 2026-02-22 07:24:50 | inspect 5x7 font glyph table for missing Q/alphabet rendering issue
+- 2026-02-22 07:25:18 | patch src/text5x7.c | added missing GLYPH_J and GLYPH_Q plus full lowercase->uppercase alphabet mapping
+- 2026-02-22 07:25:18 | ./tools/build_frdmmcxn947.sh && ./tools/flash_frdmmcxn947.sh | built and flashed full alphabet font-map fix
+- 2026-02-22 07:25:51 | update docs/PROJECT_STATE.md | documented complete 5x7 alphabet fix (J/Q + lowercase normalization)
+- 2026-02-22 07:25:51 | git diff -- src/text5x7.c docs/PROJECT_STATE.md | verified final font completeness patch
+- 2026-02-22 07:27:56 | git status/remotes + docs/failsafe inventory | prepare docs sync and golden/failsafe release cut
+- 2026-02-22 07:28:06 | read STATUS + restore/failsafe docs + TODO/TEMP_COMBINED_STATE | prepare full documentation sync for golden release
+- 2026-02-22 07:28:16 | grep restore/golden markers across project docs | identify fields to update for new golden/failsafe cut
+- 2026-02-22 07:28:29 | cut golden/failsafe from current build: mcuxsdk_ws/build/edgeai_package_transport_anomaly_demo_cm33_core0.bin | tag=GOLDEN-20260222-152829 sha=2304af425c539cc63ddd56a6e0166c1697f43d1f1c0b744bf32be32ff8b78bd3
+- 2026-02-22 07:29:58 | updated STATUS/START_HERE/RESTORE_POINTS/failsafe docs + README_GOLDEN metadata | synchronized golden tag/checksum to GOLDEN-20260222-152829
+- 2026-02-22 07:29:58 | rewrote docs/TODO.md into actionable task list | aligned project TODO with current v0.1 workflow and validation priorities
+- 2026-02-22 07:29:58 | updated docs/TEMP_COMBINED_STATE.md + docs/PROJECT_STATE.md | added latest UI glyph fixes and new golden/failsafe release cut notes
+- 2026-02-22 07:30:14 | git status + failsafe artifact listing | verify release payload before commit/push
+- 2026-02-22 07:30:21 | git add -A && git commit | committed code/docs + new golden/failsafe artifacts for release
+- 2026-02-22 07:30:31 | git push origin main | pushed release commit with updated golden/failsafe restore point
+- 2026-02-22 07:30:41 | final git status/log check | confirm pushed release and clean working tree
+- 2026-02-22 07:33:00 | inspect README and source sensor identifiers | gather exact ST shield component list for README hardware section update
+- 2026-02-22 07:33:28 | update README.md hardware section | documented ST shield components used by firmware and related probe/fallback devices
+- 2026-02-22 07:33:28 | update docs/PROJECT_STATE.md | recorded README hardware documentation expansion
+- 2026-02-22 07:33:28 | verify README changes with sed + git status | confirm working-tree delta for docs update
+- 2026-02-22 07:36:50 | git add/commit README + project docs | commit hardware section documentation update
+- 2026-02-22 07:39:01 | read README.md before hardware parts expansion for GitHub-facing docs
+- 2026-02-22 07:39:27 | patch README.md | added explicit GitHub hardware parts list including ST shield devices and supporting components used in firmware
+- 2026-02-22 07:39:27 | patch docs/PROJECT_STATE.md | logged README hardware parts expansion per project documentation rule
+EOF && git add README.md docs/PROJECT_STATE.md docs/COMMAND_LOG.md && git commit -m "Docs: expand GitHub README with shield and component parts list" && git push origin main && git log --oneline -n 1
+- 2026-02-22 07:39:34 | git status --short | checked repo state after failed combined commit command
+- 2026-02-22 07:39:39 | patch README.md + docs/PROJECT_STATE.md | added shield/components inventory for GitHub README and recorded state update
+- 2026-02-22 07:39:39 | git commit docs update | committed README shield/components expansion
+- 2026-02-22 07:39:45 | git push origin main | pushed README hardware parts update to GitHub
+- 2026-02-22 07:46:32 | cross-repo status/remotes/docs inventory | inspected firmware repo state during VS extension release coordination
+- 2026-02-22 07:48:41 | inspect AGENTS file tracking and ignore rules in package monitor repo | prepare hide-from-GitHub change
+- 2026-02-22 07:48:52 | update .gitignore + git rm --cached AGENTS.md | hide AGENTS instructions from GitHub while keeping local file
+- 2026-02-22 07:49:05 | update docs/PROJECT_STATE.md | recorded AGENTS.md hide/untrack repo-hygiene change
+- 2026-02-22 07:49:10 | git add failed due ignored AGENTS.md path | retrying with tracked updates only
+- 2026-02-22 07:49:17 | post-push verification (AGENTS local presence + git status) | confirmed AGENTS no longer tracked on GitHub
+| 2026-02-23 08:18:51 PST | `stash package unstaged logs, rebase/push restore commit, then restore stash` | fail (rebase permission error) |
+| 2026-02-23 08:18:51 PST | `inspect package permission/ownership and git state after failed rebase` | success |
+| 2026-02-23 09:34:49 PST | `audit package monitor local git status and recent commits` | success |
+| 2026-02-23 09:34:49 PST | `audit package monitor remote sync and GitHub head` | success |
+2026-02-24T02:11:32Z | cmd: read docs/START_HERE.md docs/PROJECT_STATE.md docs/OPS_RUNBOOK.md
+2026-02-24T02:11:43Z | cmd: BUILD_DIR=mcuxsdk_ws/build_anomaly ./tools/flash_frdmmcxn947.sh
+2026-02-24T02:11:43Z | result: flash exit_code=1
+2026-02-24T02:11:52Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh
+2026-02-24T02:12:02Z | result: flash(build_adaptive_reasoning) exit_code=0
+2026-02-24T02:12:09Z | cmd: inspect docs/PROJECT_STATE.md and STATUS.md
+2026-02-24T02:12:30Z | cmd: git status --short
+2026-02-24T02:13:25Z | cmd: inspect RuntimeRtc implementation and CMake linkage
+2026-02-24T02:13:35Z | cmd: rg RuntimeRtc stubs in src/edgeai_package_transport_anomaly_demo.c
+2026-02-24T02:13:42Z | cmd: scan elapsed/timebase sections in main source
+2026-02-24T02:13:48Z | cmd: inspect TimebaseInit implementation
+2026-02-24T02:13:48Z | cmd: inspect runtime clock loop implementation
+2026-02-24T02:13:56Z | cmd: inspect SDK rtc driver API for MCXN
+2026-02-24T02:14:13Z | cmd: inspect top-level prototypes and globals for runtime clock wiring
+2026-02-24T02:19:16Z | cmd: apply_patch add RTC globals/prototypes/include in src/edgeai_package_transport_anomaly_demo.c
+2026-02-24T02:19:38Z | cmd: apply_patch add RuntimeRtcInit/Reset/ReadClock in src/edgeai_package_transport_anomaly_demo.c
+2026-02-24T02:19:58Z | cmd: inspect main init/reset clock sections for patching
+2026-02-24T02:20:03Z | cmd: inspect continuation for runtime resets and runtime clock loop
+2026-02-24T02:20:09Z | cmd: inspect runtime clock loop exact block
+2026-02-24T02:20:17Z | cmd: count runtime_clock_start_ticks reset sites
+2026-02-24T02:20:34Z | cmd: apply_patch wire RuntimeRtcInit/Reset at boot and reset points
+2026-02-24T02:20:54Z | cmd: apply_patch switch runtime clock loop to RuntimeRtcReadClock with fallback
+2026-02-24T02:21:06Z | cmd: apply_patch add rtc driver linkage in CMakeLists.txt
+2026-02-24T02:21:14Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug
+2026-02-24T02:21:20Z | result: build(build_adaptive_reasoning) exit_code=1
+2026-02-24T02:21:28Z | cmd: inspect irtc driver API for MCXN947 compatibility
+2026-02-24T02:21:36Z | cmd: inspect irtc_datetime_t fields
+2026-02-24T02:21:46Z | cmd: inspect RTC_Type register members in device header
+2026-02-24T02:21:52Z | cmd: locate MCU device header defining RTC_Type
+2026-02-24T02:21:58Z | cmd: inspect RTC_Type fields in MCXN947 device header
+2026-02-24T02:22:04Z | cmd: find RTC struct section lines
+2026-02-24T02:22:10Z | cmd: inspect common header for RTC registers
+2026-02-24T02:28:27Z | cmd: locate RTC register macros for MCXN
+2026-02-24T02:28:40Z | cmd: inspect IRTC clockout/subsecond APIs
+2026-02-24T02:28:47Z | cmd: inspect irtc_clockout enum values
+2026-02-24T02:29:17Z | cmd: apply_patch switch RTC integration from fsl_rtc to fsl_irtc with datetime conversion
+2026-02-24T02:29:29Z | cmd: apply_patch switch CMake driver linkage rtc->irtc
+2026-02-24T02:29:39Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug (after irtc wiring)
+2026-02-24T02:29:43Z | result: build(after irtc wiring) exit_code=1
+2026-02-24T02:29:57Z | cmd: apply_patch use runtime_displayed_sec in RTC clock draw path
+2026-02-24T02:30:04Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug (retry)
+2026-02-24T02:30:09Z | result: build(retry) exit_code=0
+2026-02-24T02:30:16Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh (RTC fix)
+2026-02-24T02:30:24Z | result: flash(RTC fix) exit_code=0
+2026-02-24T02:30:32Z | cmd: capture UART post-flash for RTC fix
+2026-02-24T02:30:50Z | result: uart capture saved captures/uart_raw_20260223_183032_rtcfix_clean.log
+2026-02-24T02:30:56Z | cmd: inspect captured uart rtcfix log
+2026-02-24T02:31:17Z | cmd: apply_patch update docs/PROJECT_STATE.md for RTC elapsed-time fix
+2026-02-24T02:31:30Z | cmd: apply_patch update STATUS.md for RTC elapsed-time fix
+2026-02-24T02:31:30Z | cmd: git status --short
+2026-02-24T02:32:08Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh (repeat flash request)
+2026-02-24T02:32:15Z | result: flash(repeat) exit_code=0
+2026-02-24T02:32:36Z | cmd: apply_patch update docs/PROJECT_STATE.md after repeat flash
+2026-02-24T02:33:22Z | cmd: capture UART for boot-freeze triage
+2026-02-24T02:33:42Z | result: captured captures/uart_raw_20260223_183322_bootfreeze_clean.log
+2026-02-24T02:34:16Z | cmd: inspect current RuntimeRtc function block for targeted rollback
+2026-02-24T02:34:51Z | cmd: apply_patch disable RuntimeRtc path to recover boot freeze
+2026-02-24T02:35:06Z | cmd: apply_patch remove unused RuntimeRtcDatetimeToSeconds symbol
+2026-02-24T02:35:10Z | result: build(boot-freeze rollback) exit_code=0
+2026-02-24T02:35:17Z | cmd: BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh (boot-freeze rollback)
+2026-02-24T02:35:26Z | result: flash(boot-freeze rollback) exit_code=0
+2026-02-24T02:35:48Z | cmd: apply_patch update docs/PROJECT_STATE.md and STATUS.md for boot-freeze rollback
+2026-02-24T02:41:03Z | cmd: git status --short && inspect restore docs/scripts
+2026-02-24T02:41:03Z | cmd: read restore metadata files
+2026-02-24T02:41:23Z | cmd: create new golden/failsafe artifacts from build_adaptive_reasoning
+2026-02-24T02:41:33Z | cmd: inspect current restore-related doc headers for update
+2026-02-24T02:41:33Z | cmd: inspect project_state top for last updated and recent updates
+2026-02-24T02:42:01Z | cmd: update docs metadata with explicit sed/perl replacements
+2026-02-24T02:43:40Z | cmd: git status --short + inspect docs START_HERE/RESTORE_POINTS/failsafe/PROJECT_STATE/STATUS
+2026-02-24T02:43:40Z | cmd: tail -n 60 docs/COMMAND_LOG.md
+2026-02-24T02:44:04Z | cmd: apply_patch update failsafe/README_GOLDEN.txt to 2026-02-24 golden tag
+2026-02-24T02:44:18Z | cmd: apply_patch add golden/failsafe release sync entry to docs/PROJECT_STATE.md
+2026-02-24T02:44:30Z | cmd: apply_patch add release-sync status line in STATUS.md
+2026-02-24T02:44:45Z | cmd: git remote -v; git branch --show-current; git status --short

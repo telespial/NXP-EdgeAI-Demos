@@ -1,23 +1,33 @@
 # TODO
 
-## Done
-- Validate first clean build in `mcuxsdk_ws/build_anomaly`. (done 2026-02-16)
-- Flash and verify runtime on FRDM-MCXN947 + LCD-PAR-S035. (done 2026-02-16)
-- Publish first golden restore point metadata and failsafe artifacts. (done 2026-02-17)
-- Integrate shield sensor-hub path and runtime reads for LIS2MDL/LPS22DF/STTS22H. (done 2026-02-17)
-- Prioritize shield temperature for terminal TEMP + left bargraph and align redraw behavior. (done 2026-02-17)
-- Refresh golden/failsafe restore point from current validated build. (done 2026-02-17)
-- Restore MAG data path with LCD-attached runtime. (done 2026-02-17)
-- Validate streaming runtime and publish new golden/failsafe lock from working build. (done 2026-02-18)
+Last updated: 2026-02-22
+Project: `EdgeAI_Package_Transport_Adaptive_Reasoning_demo_NXP_FRDM-MCXN947`
 
-## Active Blockers
-- Run extended long-duration stability burn with all shield sensors enabled and recorder cycling.
+## Priority 0 (Release Hygiene)
+- [ ] Keep `STATUS.md`, `docs/PROJECT_STATE.md`, and restore docs synchronized on every golden cut.
+- [ ] Keep command trace complete in `docs/COMMAND_LOG.md` for every build/flash/release action.
+- [ ] Verify `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin` boots and reaches UI before tagging release.
 
-## Verification Tasks
-- Verify live values move for `MAG`, `BARO`, `SHT`, `STTS` during physical/environment changes.
-- Verify REC/PLAY persistence and timeline consistency with shield sensors enabled.
-- Capture one golden validation UART log and one UI screenshot set for release evidence.
+## Priority 1 (Runtime Validation)
+- [ ] Run end-to-end record/replay test at `1 Hz`, `10 Hz`, and `50 Hz` to verify flash cadence follows `LOG HZ`.
+- [ ] Capture UART evidence showing persisted `AS/RC/SC` fields during short transient warnings.
+- [ ] Validate help popup on hardware for full alphabet render (A-Z) across both pages.
+- [ ] Confirm settings persistence after power cycle: mode, run, AI, limits, log rate.
 
-## Secondary Tasks
-- Add optional sensor calibration offsets/scales for MAG and pressure normalization.
-- Graph/recorder expansion (2026-02-18): map and verify accel, gyro, temp, baro, mag, and humidity channels in live scope and playback recorder path.
+## Priority 2 (Data/Forensics)
+- [ ] Add explicit UART flash dump command output with signed fields and timestamp (`ts_ds`) for quick audit.
+- [ ] Save one known-good capture bundle:
+  - config/profile used
+  - UART log
+  - flash dump sample
+  - expected warning sequence
+- [ ] Document retention expectations by log rate using measured sample counts.
+
+## Priority 3 (UX Polish)
+- [ ] Keep settings/help text concise and font-safe for the 5x7 renderer.
+- [ ] Re-check popup layouts after any text edits (no overlap, no clipping, no stale artifacts).
+- [ ] Keep touch targets consistent for all up/down and confirm buttons.
+
+## Deferred (Post v0.1)
+- [ ] Additional demo profiles in extension and firmware import path.
+- [ ] Deeper training workflow automation and packaged validation scripts.

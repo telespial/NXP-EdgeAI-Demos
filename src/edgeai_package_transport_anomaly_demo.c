@@ -9,6 +9,7 @@
 #include "fsl_debug_console.h"
 #include "fsl_gt911.h"
 #include "fsl_i3c.h"
+#include "fsl_irtc.h"
 #include "fsl_lpi2c.h"
 #include "fsl_ostimer.h"
 #include "fsl_port.h"
@@ -123,6 +124,10 @@ static bool s_timebase_use_raw = false;
 static bool s_timebase_use_core_cycle = false;
 static uint32_t s_core_cycle_prev = 0u;
 static uint64_t s_core_cycle_accum = 0u;
+static bool s_runtime_rtc_ready = false;
+static uint64_t s_runtime_rtc_start_sec = 0u;
+static uint64_t s_runtime_rtc_start_ticks = 0u;
+static uint32_t s_runtime_rtc_last_ds = 0u;
 static bool s_touch_i2c_inited = false;
 static bool s_accel_i2c_inited = false;
 static bool s_accel_ready = false;
@@ -194,6 +199,9 @@ static void ShieldGyroInit(void);
 static uint32_t CoreClockHz(void);
 static bool ShieldImuSupportsShub(uint8_t who);
 static uint64_t TimebaseNowTicks(void);
+static bool RuntimeRtcInit(void);
+static bool RuntimeRtcReset(void);
+static bool RuntimeRtcReadClock(uint16_t *hh, uint8_t *mm, uint8_t *ss, uint8_t *ds, uint32_t *ds_total);
 
 typedef struct
 {
@@ -1195,6 +1203,30 @@ static uint32_t CoreClockHz(void)
         hz = SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY;
     }
     return hz;
+}
+
+static bool RuntimeRtcInit(void)
+{
+    s_runtime_rtc_ready = false;
+    return false;
+}
+
+static bool RuntimeRtcReset(void)
+{
+    s_runtime_rtc_start_sec = 0u;
+    s_runtime_rtc_start_ticks = 0u;
+    s_runtime_rtc_last_ds = 0u;
+    return false;
+}
+
+static bool RuntimeRtcReadClock(uint16_t *hh, uint8_t *mm, uint8_t *ss, uint8_t *ds, uint32_t *ds_total)
+{
+    (void)hh;
+    (void)mm;
+    (void)ss;
+    (void)ds;
+    (void)ds_total;
+    return false;
 }
 
 static bool TouchI2CRecover(void)
@@ -3627,8 +3659,10 @@ int main(void)
     ShieldGyroUpdate();
     ShieldAuxInit();
     (void)TimebaseInit();
+    (void)RuntimeRtcInit();
     time_prev_ticks = TimebaseNowTicks();
     runtime_clock_start_ticks = time_prev_ticks;
+    (void)RuntimeRtcReset();
     GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
     GaugeRender_SetHelpVisible(false);
     GaugeRender_SetSettingsVisible(false);
@@ -3664,6 +3698,7 @@ int main(void)
         runtime_elapsed_ds = 0u;
         runtime_displayed_sec = UINT32_MAX;
         runtime_clock_start_ticks = TimebaseNowTicks();
+        (void)RuntimeRtcReset();
         GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
         PRINTF("EXT_FLASH_PLAY: %s\r\n", playback_active ? "ready" : "no_data");
         if (playback_active && ExtFlashRecorder_GetPlaybackInfo(&play_off, &play_cnt))
@@ -4045,6 +4080,7 @@ int main(void)
             runtime_elapsed_ds = 0u;
             runtime_displayed_sec = UINT32_MAX;
             runtime_clock_start_ticks = TimebaseNowTicks();
+            (void)RuntimeRtcReset();
             GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
             PRINTF("EXT_FLASH_PLAY: %s\r\n", playback_active ? "restart" : "no_data");
             if (playback_active && ExtFlashRecorder_GetPlaybackInfo(&play_off, &play_cnt))
@@ -4067,6 +4103,7 @@ int main(void)
                 ResetSignalPeakWindows();
                 runtime_displayed_sec = UINT32_MAX;
                 runtime_clock_start_ticks = TimebaseNowTicks();
+                (void)RuntimeRtcReset();
                 GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
                 if (anom_mode == ANOMALY_MODE_TRAINED_MONITOR)
                 {
@@ -4084,6 +4121,7 @@ int main(void)
                 ResetSignalPeakWindows();
                 runtime_displayed_sec = UINT32_MAX;
                 runtime_clock_start_ticks = TimebaseNowTicks();
+                (void)RuntimeRtcReset();
                 GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
                 PRINTF("EXT_FLASH_REC: clear_failed\r\n");
             }
@@ -4100,6 +4138,7 @@ int main(void)
             runtime_elapsed_ds = 0u;
             runtime_displayed_sec = UINT32_MAX;
             runtime_clock_start_ticks = TimebaseNowTicks();
+            (void)RuntimeRtcReset();
             GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
             PRINTF("EXT_FLASH_REC: stop_confirmed\r\n");
             if (lcd_ok)
@@ -4117,6 +4156,7 @@ int main(void)
             rec_elapsed_ds = 0u;
             runtime_displayed_sec = UINT32_MAX;
             runtime_clock_start_ticks = TimebaseNowTicks();
+            (void)RuntimeRtcReset();
             GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
             PRINTF("EXT_FLASH_MANUAL_CLEAR: %s\r\n", cleared ? "ok" : "failed");
             if (lcd_ok)
@@ -4146,6 +4186,7 @@ int main(void)
                 runtime_elapsed_ds = 0u;
                 runtime_displayed_sec = UINT32_MAX;
                 runtime_clock_start_ticks = TimebaseNowTicks();
+                (void)RuntimeRtcReset();
                 GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
                 PRINTF("EXT_FLASH_PLAY: %s\r\n", playback_active ? "ready" : "no_data");
                 if (playback_active && ExtFlashRecorder_GetPlaybackInfo(&play_off, &play_cnt))
@@ -4166,6 +4207,7 @@ int main(void)
                 ResetSignalPeakWindows();
                 runtime_displayed_sec = UINT32_MAX;
                 runtime_clock_start_ticks = TimebaseNowTicks();
+                (void)RuntimeRtcReset();
                 GaugeRender_SetRuntimeClock(0u, 0u, 0u, 0u, true);
                 PRINTF("EXT_FLASH_REC: active\r\n");
                 if (ext_flash_ok && ExtFlashRecorder_GetRecordInfo(&rec_cnt))
@@ -4293,26 +4335,31 @@ int main(void)
             runtime_clock_tick_accum_us -= RUNTIME_CLOCK_PERIOD_US;
             if (!record_mode && !playback_active)
             {
+                uint16_t ch;
+                uint8_t cm, cs, cds;
+                bool rtc_ok = RuntimeRtcReadClock(&ch, &cm, &cs, &cds, &runtime_elapsed_ds);
                 uint32_t elapsed_sec;
-                if (s_timebase_ready && (s_timebase_hz != 0u))
+
+                if (!rtc_ok)
                 {
-                    uint64_t now_ticks = TimebaseNowTicks();
-                    uint64_t dt_ticks = (now_ticks >= runtime_clock_start_ticks) ? (now_ticks - runtime_clock_start_ticks) : 0u;
-                    elapsed_sec = (uint32_t)(dt_ticks / s_timebase_hz);
-                    runtime_elapsed_ds = elapsed_sec * 10u;
-                }
-                else
-                {
-                    runtime_elapsed_ds++;
-                    elapsed_sec = runtime_elapsed_ds / 10u;
+                    if (s_timebase_ready && (s_timebase_hz != 0u))
+                    {
+                        uint64_t now_ticks = TimebaseNowTicks();
+                        uint64_t dt_ticks =
+                            (now_ticks >= runtime_clock_start_ticks) ? (now_ticks - runtime_clock_start_ticks) : 0u;
+                        runtime_elapsed_ds = (uint32_t)((dt_ticks * 10ull) / s_timebase_hz);
+                    }
+                    else
+                    {
+                        runtime_elapsed_ds++;
+                    }
+                    ClockFromDeciseconds(runtime_elapsed_ds, &ch, &cm, &cs, &cds);
                 }
 
-                if (elapsed_sec != runtime_displayed_sec)
+                elapsed_sec = runtime_elapsed_ds / 10u;
+                if ((elapsed_sec != runtime_displayed_sec) || (cds != 0u))
                 {
-                    uint16_t ch;
-                    uint8_t cm, cs, cds;
-                    ClockFromDeciseconds(elapsed_sec * 10u, &ch, &cm, &cs, &cds);
-                    GaugeRender_SetRuntimeClock(ch, cm, cs, 0u, true);
+                    GaugeRender_SetRuntimeClock(ch, cm, cs, cds, true);
                     runtime_displayed_sec = elapsed_sec;
                 }
             }

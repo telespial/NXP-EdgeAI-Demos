@@ -46,11 +46,13 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES components/touch/gt911/fsl_gt911.c
             drivers/ostimer/fsl_ostimer.c
+            drivers/irtc/fsl_irtc.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES drivers/ostimer
+             drivers/irtc
 )
 
 mcux_add_include(

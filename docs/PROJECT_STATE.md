@@ -1,15 +1,245 @@
 # Project State
 
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 
 ## Current Baseline
 - Lifecycle: initialized
 - App target: `edgeai_package_transport_anomaly_demo`
 - Build target: `frdmmcxn947` / `cm33_core0`
-- Golden tag: `GOLDEN-20260223-161638`
-- Lock tag: `FAILSAFE-20260223-161638`
+- Golden tag: `GOLDEN-20260224-024123`
+- Lock tag: `FAILSAFE-ACTIVE`
 - Failsafe binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
+
+## Update 2026-02-24 (Golden/Failsafe Release Sync: GOLDEN-20260224-024123)
+- Promoted current validated image as release baseline:
+  - golden tag: `GOLDEN-20260224-024123`
+  - golden binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260224T024123Z.bin`
+  - active failsafe: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
+  - sha256: `0006e750231b6645e62ce770a21b8e965d80f7f68bedc7a584d5e27e0da3d9ce`
+- Synced restore metadata in:
+  - `docs/START_HERE.md`
+  - `docs/RESTORE_POINTS.md`
+  - `docs/failsafe.md`
+  - `failsafe/README_GOLDEN.txt`
+  - `STATUS.md`
+
+## Update 2026-02-24 (Flash Request: Last Build)
+- User-requested flash executed for this repo.
+- `build_anomaly` flash path failed due to stale CMake cache path pointing to prior repo name (`..._Anomaly_demo_...`).
+- Successful flash completed using current active build directory:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh`
+  - result: PASS
+  - probe: `UYLKOJI11H2B3`
+
+## Update 2026-02-24 (Elapsed Time Source: RTC Hardware Feed Restored)
+- Root cause: live elapsed clock path was using OSTIMER/render-loop delta math as primary source, not RTC.
+- Implemented dedicated runtime RTC path in `src/edgeai_package_transport_anomaly_demo.c`:
+  - added `RuntimeRtcInit`, `RuntimeRtcReset`, `RuntimeRtcReadClock`.
+  - runtime clock loop now reads RTC first; OSTIMER path remains fallback.
+  - RTC reset is invoked on boot and on each REC/PLAY/manual-clear runtime reset point.
+- MCXN947 driver correction:
+  - switched from incompatible `drivers/rtc/fsl_rtc.c` to `drivers/irtc/fsl_irtc.c`.
+  - source now uses `fsl_irtc.h` APIs (`IRTC_Init`, `IRTC_SetDatetime`, `IRTC_GetDatetime`).
+- Build/flash verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` PASS
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` PASS
+
+## Update 2026-02-24 (Repeat Flash on Request)
+- User requested another flash cycle.
+- Executed:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh`
+- Result: PASS (no rebuild work needed; flashed existing image)
+- Probe: `UYLKOJI11H2B3`
+
+## Update 2026-02-24 (Boot Freeze Hotfix Rollback)
+- Field report: screen froze on boot after RTC-hardware elapsed-time integration.
+- Immediate hotfix applied to restore boot stability:
+  - disabled active `RuntimeRtc*` path (stubbed init/read/reset to fallback behavior),
+  - retained prior OSTIMER-based elapsed path.
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` PASS
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` PASS
+  - probe: `UYLKOJI11H2B3`
+
+## Update 2026-02-22 (Repo Hygiene: Hide Local Agent Instructions)
+- Removed `AGENTS.md` from git tracking (`git rm --cached AGENTS.md`) while preserving local file content on disk.
+- Added ignore rules in `.gitignore`:
+  - `AGENTS.md`
+  - `agents.md`
+- Result: local agent-instruction files are no longer published to GitHub for this project repo.
+
+## Update 2026-02-22 (README GitHub Hardware Parts Expansion)
+- Expanded `README.md` with explicit GitHub-facing hardware parts list including board, display, ST shield devices, and key supporting components used in code paths.
+- Added clear component inventory entries for:
+  - `LSM6DSO16IS`, `LIS2MDL`, `LPS22DF`, `STTS22H`
+  - `LSM6DSV16X` and `LIS2DUXS12` probe/fallback entries
+  - `SHT40`, `P3T1755DP`, external flash (`W25Q64` class), and `GT911` touch path
+
+## Update 2026-02-22 (README Hardware Section Expanded)
+- Updated `README.md` to explicitly document the ST shield component stack used by firmware code:
+  - `LSM6DSO16IS`, `LIS2MDL`, `LPS22DF`, `STTS22H`
+  - plus shield-mounted `SHT40` auxiliary environment channel
+  - plus probe/fallback references (`LSM6DSV16X`, `LIS2DUXS12`) and board temp path (`P3T1755DP`)
+- Purpose: make GitHub-facing hardware coverage clear for integrators and reviewers.
+
+## Update 2026-02-22 (Golden/Failsafe Release Cut: GOLDEN-20260222-152829)
+- Cut new golden/failsafe from current validated build output:
+  - golden tag: `GOLDEN-20260222-152829`
+  - golden binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260222T152829Z.bin`
+  - failsafe active: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
+  - sha256: `2304af425c539cc63ddd56a6e0166c1697f43d1f1c0b744bf32be32ff8b78bd3`
+- Synced restore metadata across:
+  - `STATUS.md`
+  - `docs/START_HERE.md`
+  - `docs/RESTORE_POINTS.md`
+  - `docs/failsafe.md`
+  - `failsafe/README_GOLDEN.txt`
+
+## Update 2026-02-22 (UI Text/Glyph Reliability Fixes)
+- Restored visible `LOG HZ` controls in settings by switching from text `+/-` to explicit drawn up/down arrow icons.
+- Fixed help popup character loss by completing font map coverage in `src/text5x7.c`:
+  - added missing `J` and `Q` glyphs,
+  - normalized lowercase letters to uppercase before glyph lookup so full A-Z is available.
+- Verification:
+  - `./tools/build_frdmmcxn947.sh && ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (5x7 Font Completeness Fix: Missing Q and J)
+- Root cause for missing help text letters was incomplete 5x7 font mapping in `src/text5x7.c`:
+  - `Q` glyph was not defined or mapped,
+  - `J` glyph was not defined or mapped,
+  - lowercase handling was partial (only a few letters mapped).
+- Fix applied:
+  - added `GLYPH_J` and `GLYPH_Q`,
+  - added `J` and `Q` switch mappings,
+  - normalized all lowercase letters to uppercase before glyph lookup, ensuring full A-Z coverage from a single glyph set.
+- Verification:
+  - `./tools/build_frdmmcxn947.sh && ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Help Popup Missing Character Render Fix)
+- Fixed help popup text rendering where multiple characters were missing across pages on the board font:
+  - rewrote help-page strings to plain uppercase ASCII wording with reduced symbol-heavy punctuation,
+  - replaced slash and symbol-heavy phrasing with simple words to avoid unsupported glyph fall-through in panel text rendering.
+- Updated help page header to `PAGE 1 OF 2` / `PAGE 2 OF 2` for consistent visible character set.
+- Verification:
+  - `./tools/build_frdmmcxn947.sh && ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Settings UI: LOG HZ Up/Down Icons Restored)
+- Fixed missing visual controls in `LOG HZ` setting row:
+  - replaced `+` / `-` text rendering with explicit drawn arrow icons (down on decrement button, up on increment button),
+  - avoids font-glyph visibility issues and keeps controls consistent with touch-target semantics.
+- Verification:
+  - `./tools/build_frdmmcxn947.sh` (PASS)
+  - `./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (LOG HZ Drives Flash Record Rate + Buffered Alert Capture)
+- Implemented recorder cadence coupling to UI `LOG HZ` selection:
+  - flash record/write loop now uses dynamic period from `ClampLogRateHz(s_log_rate_hz)`:
+    - `1 Hz`, `5 Hz`, `10 Hz`, `20 Hz`, `30 Hz`, `40 Hz`, `50 Hz`.
+  - replaced fixed-period recorder gate with dynamic catch-up loop (`while (recplay_tick_accum_us >= recplay_period_us)`).
+- Improved flash evidence capture for alert context:
+  - recorder now consumes buffered alert window (`ConsumeAlertCaptureWindow`) at write time,
+  - persisted `anomaly_score_pct`, `alert_status`, and `alert_reason_code` represent worst/highest-priority state seen in the capture interval, not only instantaneous frame state.
+- Existing buffered sensor peak capture remains active for accel/gyro/mag log+record windows.
+- Verification:
+  - `./tools/build_frdmmcxn947.sh` (PASS)
+  - `./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Adaptive False-Positive Reduction Tuning)
+- Implemented warning/fault anti-chatter logic to reduce over-triggering during ordinary handling/tilt:
+  - added persistence gates before status elevation:
+    - fault candidates require sustained condition (~167 ms),
+    - hard-limit warnings require sustained condition (~250 ms),
+    - predictive/score/watch warnings require sustained condition (~700 ms to 1 s).
+  - added score hysteresis (separate enter/exit thresholds) so score warnings/faults do not chatter around threshold edges.
+- Added adaptive-baseline freeze control in anomaly engine:
+  - adaptive baseline updates pause during active warning/fault windows,
+  - adaptation remains frozen during a stable-normal recovery window (~8 s), then resumes automatically.
+- Updated generated profile score thresholds for calmer default behavior:
+  - `EIL_ALERT_WARN`: `0.18`
+  - `EIL_ALERT_FAIL`: `0.35`
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Tilt vs Impact Retune)
+- Addressed reported behavior: tilt warnings were too eager while hard bangs could be missed.
+- Runtime retune applied:
+  - tilt warning now requires stronger/lower-noise posture evidence:
+    - x/y tilt component >= `1000 mg`,
+    - z component still present (>= `350 mg`),
+    - low dynamics gate (`jerk <= 500 mg`, gyro peak <= `300 dps`).
+  - erratic/impact detection now includes explicit accel peak path:
+    - triggers on `jerk >= 2200 mg`, or accel axis peak >= `2800 mg`, or gyro+jerk combo.
+  - added short impact latch (`~250 ms`) so transient bangs survive decision cadence.
+  - impact warning persistence reduced to `~125 ms` so impact warnings can mature quickly.
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Impact Warning Maturation Fix)
+- Addressed issue where hard bang appeared on graph but warning did not post.
+- Runtime change:
+  - `ERRATIC_MOTION` warning now matures immediately once impact condition is detected (no additional persistence delay).
+  - impact latch window increased to ~`800 ms` so short transients remain eligible through UI decision cadence.
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Accel Spike Alert Sync + Horizon Stability Fix)
+- Addressed two runtime issues:
+  - accel spikes visible on graph without corresponding warning,
+  - gyro-sphere horizon line disappearing/reappearing intermittently.
+- Runtime fixes:
+  - warning/fault accel peak path now evaluates against buffered accel peak windows (capture/log) in addition to instantaneous values, so alerting aligns with graphed spikes.
+  - sphere attitude rendering now uses last valid accel attitude when a sample-validity blip occurs, preventing horizon flicker/dropout.
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Raw Accel Path for Scope + Bang Alerts)
+- Addressed report where gyro sphere/graph responded but accel graph + bang warnings were missing.
+- Root cause:
+  - accel bang/trace path was relying on low-pass filtered accel state, which can suppress short impacts.
+- Runtime fix:
+  - added explicit raw accel channels (`s_accel_raw_x/y/z_mg`) from IMU read path,
+  - switched accel peak windows and alert accel peak evaluation to raw accel channels,
+  - switched scope linear-accel feed to raw accel channels while retaining filtered accel for sphere orientation stability.
+- Result target:
+  - accel spikes should now appear in graph and trigger bang warning more reliably.
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Post-Impact Warning Decay Fix)
+- Addressed issue where `BREAK` (impact) transitioned to `SHIFT` and remained stuck instead of returning to normal.
+- Runtime retune:
+  - lowered anomaly-level to score mapping to reduce score-stickiness in normal/watch states:
+    - `WATCH`: `12%` (was `40%`)
+    - `MINOR`: `45%` (was `80%`)
+    - `MAJOR`: `85%` (was `100%`)
+  - tightened score warning exit hysteresis (warn exit now ~85% of enter threshold, not ~67%) so post-event score warnings decay sooner.
+  - warning hold timer no longer re-extends repeatedly for same-priority same-reason warnings.
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (ANOMALY_WATCH Rest-State Recovery Fix)
+- Addressed issue where warning could remain in `WATCH/SHIFT` state for extended time after impact even at rest.
+- Runtime change:
+  - `ANOMALY_WATCH` no longer elevates to warning unless active motion evidence is present (accel/jerk/gyro activity gate).
+  - at-rest watch-level noise now decays to `NORMAL` instead of perpetually reasserting warning.
+- Verification:
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
+  - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/flash_frdmmcxn947.sh` (PASS, probe `2PZWMSBKUXU22`)
+
+## Update 2026-02-22 (Temporary Combined State Doc Added)
+- Added `docs/TEMP_COMBINED_STATE.md` as a single temporary briefing document that consolidates:
+  - project baseline and milestone state,
+  - runtime architecture summary,
+  - AI/non-AI alert behavior,
+  - operator mode/settings model,
+  - verified status and next recommended validation step.
 
 ## Update 2026-02-22 (Documentation Expansion: AI + System Functions)
 - Updated user-facing and engineering docs to fully describe the current runtime behavior:
@@ -1400,33 +1630,3 @@ Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 - Verification:
   - `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning ./tools/build_frdmmcxn947.sh debug` (PASS)
   - `./tools/flash_frdmmcxn947.sh mcuxsdk_ws/build_adaptive_reasoning/edgeai_package_transport_anomaly_demo_cm33_core0.bin` (PASS, probe `2PZWMSBKUXU22`)
-
-## Update 2026-02-23
-- Change: Built and flashed current package demo firmware.
-- Verification:
-  - `./tools/build_frdmmcxn947.sh debug` PASS
-  - `./tools/flash_frdmmcxn947.sh` PASS
-- Result: ok
-
-## Update 2026-02-23
-- Change: Added flash fail-fast guard and safe wrapper for package demo.
-  - `tools/flash_frdmmcxn947.sh` now blocks flash if expected package artifact is missing or build dir app path does not match project
-  - new wrapper: `tools/flash_safe.sh`
-- Verification:
-  - mismatch safety test PASS (intentionally pointed package flash wrapper at medical build dir; flash was blocked before west flash)
-- Result: ok
-
-## Update 2026-02-23 (Golden/Failsafe Refresh: GOLDEN-20260223-161638)
-- Cut a new timestamped golden artifact and promoted active failsafe from current validated build output.
-  - golden tag: `GOLDEN-20260223-161638`
-  - failsafe tag: `FAILSAFE-20260223-161638`
-  - golden binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260223T161638Z.bin`
-  - failsafe active: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
-  - sha256: `2304af425c539cc63ddd56a6e0166c1697f43d1f1c0b744bf32be32ff8b78bd3`
-- Synchronized restore metadata in:
-  - `docs/START_HERE.md`
-  - `docs/RESTORE_POINTS.md`
-  - `docs/failsafe.md`
-  - `failsafe/README_GOLDEN.txt`
-  - `STATUS.md`
-- Result: ok

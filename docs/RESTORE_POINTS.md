@@ -1,17 +1,17 @@
 # Restore Points
 
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 
 ## Active Golden
-- Golden tag: `GOLDEN-20260223-161638`
-- Lock tag: `FAILSAFE-20260223-161638`
-- Binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260223T161638Z.bin`
-- Checksum (sha256): `2304af425c539cc63ddd56a6e0166c1697f43d1f1c0b744bf32be32ff8b78bd3`
+- Golden tag: `GOLDEN-20260224-024123`
+- Lock tag: `FAILSAFE-ACTIVE`
+- Binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260224T024123Z.bin`
+- Checksum (sha256): `0006e750231b6645e62ce770a21b8e965d80f7f68bedc7a584d5e27e0da3d9ce`
 
 ## Failsafe Active
 - Binary: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
-- Checksum (sha256): `2304af425c539cc63ddd56a6e0166c1697f43d1f1c0b744bf32be32ff8b78bd3`
+- Checksum (sha256): `0006e750231b6645e62ce770a21b8e965d80f7f68bedc7a584d5e27e0da3d9ce`
 
 ## Notes
 - This golden captures the current validated UI/data stack plus buffered LCD fill optimization:

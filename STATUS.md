@@ -1,10 +1,14 @@
 # Status
 
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 
 - Project build target: `edgeai_package_transport_anomaly_demo` (`frdmmcxn947/cm33_core0`)
 - Current build status: PASS (`mcuxsdk_ws/build_adaptive_reasoning`)
-- Flash status: PASS in this session (probe `2PZWMSBKUXU22`)
+- Flash status: PASS in this session (probe `UYLKOJI11H2B3`)
+- Flash note: runbook `build_anomaly` cache is stale to old repo path; successful flash used `BUILD_DIR=mcuxsdk_ws/build_adaptive_reasoning`.
+- Latest elapsed-time fix: PASS build/flash (`fsl_irtc` runtime clock path restored as primary source for elapsed time; OSTIMER retained as fallback/fractional aid, 2026-02-24)
+- Latest boot hotfix: PASS build/flash (RTC runtime path disabled to remove boot freeze; OSTIMER fallback active, 2026-02-24)
+- Latest release sync: PASS (golden/failsafe metadata synchronized to `GOLDEN-20260224-024123`, 2026-02-24)
 - Latest hotfix: PASS (LCD/touch responsiveness mitigation in `par_lcd_s035_fill_rect`, 2026-02-22)
 - Latest profile import: PASS (`package_shipping_monitor` imported and model name shown in settings page 1)
 - Latest settings/logging update: PASS (model/version moved near settings footer + configurable `LOG HZ` selector/persistence, 2026-02-22)
@@ -80,10 +84,10 @@ Last updated: 2026-02-23
   - alert banner now shows `NORMAL TRACKING` without the `WARNING` prefix when that detail is active.
 
 ## Golden Baseline (Active)
-- Golden tag: `GOLDEN-20260223-161638`
+- Golden tag: `GOLDEN-20260224-024123`
 - Active failsafe: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
-- Golden image: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260223T161638Z.bin`
-- sha256: `2304af425c539cc63ddd56a6e0166c1697f43d1f1c0b744bf32be32ff8b78bd3`
+- Golden image: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_golden_20260224T024123Z.bin`
+- sha256: `0006e750231b6645e62ce770a21b8e965d80f7f68bedc7a584d5e27e0da3d9ce`
 
 ## Frozen Features in Golden
 - Accelerometer sphere gauge with fast redraw.

@@ -16,7 +16,7 @@ BUILD_DIR=mcuxsdk_ws/build_anomaly ./tools/build_frdmmcxn947.sh debug
 
 ## Flash
 ```bash
-BUILD_DIR=mcuxsdk_ws/build_anomaly ./tools/flash_safe.sh
+BUILD_DIR=mcuxsdk_ws/build_anomaly ./tools/flash_frdmmcxn947.sh
 ```
 
 ## Logging Requirements

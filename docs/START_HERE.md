@@ -15,5 +15,5 @@ Read in order:
 Current baseline:
 - Project: `EdgeAI_Package_Transport_Anomaly_demo_NXP_FRDM-MCXN947`
 - App target: `edgeai_package_transport_anomaly_demo`
-- Golden tag: `GOLDEN-20260223-161638`
+- Golden tag: `GOLDEN-20260224-024123`
 - Failsafe: `failsafe/edgeai_package_transport_anomaly_demo_cm33_core0_failsafe_active.bin`
