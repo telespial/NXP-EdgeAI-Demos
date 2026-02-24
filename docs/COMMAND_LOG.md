@@ -899,3 +899,6 @@ EOF && git add README.md docs/PROJECT_STATE.md docs/COMMAND_LOG.md && git commit
 2026-02-24T02:44:18Z | cmd: apply_patch add golden/failsafe release sync entry to docs/PROJECT_STATE.md
 2026-02-24T02:44:30Z | cmd: apply_patch add release-sync status line in STATUS.md
 2026-02-24T02:44:45Z | cmd: git remote -v; git branch --show-current; git status --short
+2026-02-24T02:44:57Z | cmd: git add -A
+2026-02-24T02:44:57Z | cmd: git commit -m 'Release sync: update golden/failsafe restore point and docs'
+2026-02-24T02:44:57Z | result: commit=20a1acd files=16
