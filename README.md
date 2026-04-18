@@ -68,3 +68,7 @@ Useful markers:
 - `TOF AI: ON/OFF`
 - `AI_CSV,...`
 - `AI_F64,...`
+
+## License
+
+See [LICENSE](./LICENSE).
