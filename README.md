@@ -114,3 +114,7 @@ BUILD_DIR=mcuxsdk_ws/build_anomaly ./tools/flash_frdmmcxn947.sh
 - `tools/` setup/build/flash scripts
 - `data/` replay assets
 - `failsafe/` restore binaries + checksums + metadata
+
+## License
+
+See [LICENSE](./LICENSE).
