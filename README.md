@@ -99,3 +99,7 @@ This supports replay and post-event analysis with explicit cause visibility.
 - `docs/`: design, operations, restore points, command logs
 - `data/`: replay assets
 - `failsafe/`: pinned recovery binaries/checksums
+
+## License
+
+See [LICENSE](./LICENSE).
