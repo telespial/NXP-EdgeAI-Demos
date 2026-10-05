@@ -2,7 +2,7 @@
 
 Standalone embedded intelligence firmware for **FRDM-MCXN947 + LCD-PAR-S035** that layers adaptive anomaly monitoring on top of standard host firmware logic.
 
-![package_mon](https://github.com/user-attachments/assets/32d6d706-53bc-4582-9031-dc30bee0869e)
+<img width="600" height="450" alt="553213948-32d6d706-53bc-4582-9031-dc30bee0869e" src="https://github.com/user-attachments/assets/24a4809a-bee3-4417-a761-04a90b9b4a43" />
 
 This project is designed as a practical "AI watchover" system:
 - host firmware keeps deterministic control behavior,
