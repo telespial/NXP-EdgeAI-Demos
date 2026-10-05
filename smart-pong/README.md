@@ -2,7 +2,7 @@
 
 Smart Pong is a 3D-look Pong implementation for FRDM-MCXN947 with LCD-PAR-S035.
 
-![NXP_Smart_Pong](https://github.com/user-attachments/assets/4fef2026-4e27-438b-8b81-2ac7305def1e)
+<img width="800" height="528" alt="568496721-4fef2026-4e27-438b-8b81-2ac7305def1e" src="https://github.com/user-attachments/assets/ade32e81-b843-4aea-a5e6-e78cc8133990" />
 
 ## Real World AI Learning Demonstration
 1. Compare three control behaviors in the same system:
