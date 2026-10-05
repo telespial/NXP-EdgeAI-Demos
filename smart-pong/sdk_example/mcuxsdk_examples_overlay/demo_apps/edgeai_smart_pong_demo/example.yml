@@ -1,0 +1,6 @@
+name: edgeai_smart_pong_demo
+description: 3D-look Pong demo with baseline CPU AI and optional NPU hook points (FRDM-MCXN947)
+boards:
+  - frdmmcxn947
+toolchains:
+  - armgcc

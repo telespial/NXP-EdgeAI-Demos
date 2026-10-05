@@ -1,0 +1,84 @@
+# Smart Pong Demo Status
+
+- Current target: FRDM-MCXN947 3D-look Smart Pong on LCD-PAR-S035
+- Workspace: `mcuxsdk_ws/` (created by `./tools/setup_mcuxsdk_ws.sh`)
+
+## Last Run
+- Date: 2026-03-24
+- Result: ok (build/flash)
+- Binary: `mcuxsdk_ws/mcuxsdk_ws/build_default_algo_left_edgeai_right_20260324/edgeai_smart_pong_demo_cm33_core0.bin`
+- Build: `BUILD_DIR=mcuxsdk_ws/build_default_algo_left_edgeai_right_20260324 ./tools/build_frdmmcxn947.sh`
+- Flash: `BUILD_DIR=mcuxsdk_ws/build_default_algo_left_edgeai_right_20260324 ./tools/flash_frdmmcxn947.sh`
+- Notes (default SKILL 2026-03-24): boot default now starts in `ALGO/AI` mode (left `ALGO`, right `EdgeAI`).
+- Notes (UI spacing 2026-03-24): moved `D?` right by ~1.5 character cells while keeping `?` position unchanged, creating a clearer gap between `x` (1/2/3) and `?`.
+- Notes (restore marker 2026-03-24): promoted `D?` spacing firmware as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260324_073456_ui_dx_spacing_golden.elf`
+- Notes (UI fit 2026-03-24): reverted top pill control typography/layout to compact sizing so `P? D? ?` fits as originally intended.
+- Notes (UI fit 2026-03-24): restored original label ordering/placement (`P? D?` before `?`) and reduced help-icon glyph scale.
+- Notes (game pace 2026-03-24): increased startup serve speed by 14% so matches feel faster from first rally.
+- Notes (game pace 2026-03-24): once either side reaches `6+` points, serve pace now ramps progressively (clamped) to keep late-game rallies visually energetic.
+- Notes (visual style 2026-03-24): updated arena colors, world scaling, and HUD styling to more closely match the Infineon Smart Pong visual direction.
+- Notes (EdgeAI fairness 2026-03-24): AI-side learning selection now requires `ai_enabled`, so non-AI/manual side behavior is unaffected when EdgeAI is off.
+- Notes (EdgeAI assist 2026-03-24): removed global non-EdgeAI penalties and kept EdgeAI-only improvements with mild symmetric-mode assist so EdgeAI players still improve without changing non-AI side logic.
+- Notes (verification 2026-03-24): rebuilt and reflashed after style/fairness/pacing updates (build/flash PASS).
+- Notes (restore marker 2026-03-24): promoted style+fairness+speed firmware as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260324_065426_style_edgeai_fairness_speedup_golden.elf`
+- Notes (persistence): match reset now explicitly reloads the learned persistence snapshot when `PERSIST` is enabled.
+- Notes (settings UI): added `SPEED++` toggle row and moved `NEW GAME` to the next row.
+- Notes (speed progression): when `SPEED++` is enabled, each side hitting `11, 22, 33, ...` raises serve-speed target by `5%` (compounding), clamped by runtime limits.
+- Notes (flash persistence): `PERSIST ON` now restores AI learning profiles from onboard flash (`fsl_flash` ROM API) after reboot/power cycle.
+- Notes (flash write policy): profile snapshot is synced to flash on match reset/new game to limit flash wear; `PERSIST OFF` clears stored snapshot.
+- Notes (SPEED++ tuning): milestone boost updated to `+5%` per side-specific multiple-of-11 score event (`11, 22, 33, ...`).
+- Notes (settings label render): added `+` support to the 5x7 font so `SPEED++` displays correctly (previously rendered as `SPEED`).
+- Restore point: current build is the active Golden + Failsafe snapshot.
+- Notes (SKILL setting): learn-mode selector now supports `2AI`, `AI/ALGO`, and `ALGO/AI` so EdgeAI can run on either side.
+- Notes (docs refresh): updated README and project description to match current settings, SKILL modes, SPEED++, and side-independent persistence behavior.
+- Notes (SKILL balance): ALGO side remains CPU-only while mixed-mode EdgeAI now blends NPU output with analytic intercept for stronger stability and competitiveness.
+- Notes (verification run): rebuilt and reflashed after SKILL-balance tuning; ready for fresh AI-vs-ALGO score validation on hardware.
+- Notes (mixed-mode tune): reduced EdgeAI mixed-mode handicap by using ALGO-like target update cadence plus adaptive NPU confidence gating (fallback to analytic predictor on high disagreement).
+- Notes (release marker): current mixed-SKILL fairness tuning is promoted as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260225_0100_mixed_skill_balance_confidence_gate_golden.elf`
+- Notes (physics tuning): paddle corner/edge hits now apply a slight outward Y/Z deflection, increasing natural wall-ricochet rallies.
+- Notes (physics tuning v2): near-true paddle-corner hits now get stronger Y/Z deflection plus a minimum side-velocity gate to create clearly visible extreme ricochets.
+- Notes (restore selection): active Golden/Failsafe is pinned to the build before the extreme-bounce tuning for safe rollback while bounce tuning is under evaluation.
+- Notes (online learning): added lightweight per-side online tactical style learning (center/corner strategy bandit) that adapts target bias from hit/miss outcomes without retraining model weights.
+- Notes (AI retune): reduced early tactical exploration and scaled style influence by learning maturity; added slight mixed-mode edge (lower noise + modest speed boost) to improve early AI-vs-ALGO competitiveness.
+- Notes (lead retune): added dynamic high-speed lead boost for EdgeAI so anticipation increases with ball velocity (extra mixed-mode bonus), improving top-speed rally tracking.
+- Notes (default startup profile): P0, LEVEL 3, NPU ON, SKILL AI/ALGO, PERSIST OFF, MATCH 100, TARGET OFF, SPEED++ ON.
+- Notes (persistence default): firmware boots with persistence disabled; persisted flash profile is only restored after the user selects `PERSIST ON`.
+- Notes (verification 2026-02-26): rebuilt and reflashed after persistence-default update.
+- Notes (persistence safeguards 2026-02-26): added decay toward defaults, quality-gated persistence writes, and auto-rollback to last-good profile on sustained regression when `PERSIST ON`.
+- Notes (runtime safeguards 2026-02-26): extended decay and rollback safeguards to run in long `PERSIST OFF` sessions (in-memory), with flash write-gating still applied only when `PERSIST ON`.
+- Notes (score-cap behavior 2026-02-26): match now hard-caps at `999` points on either side, shows confetti, then auto-resets after `30s`; reset persistence follows `PERSIST ON/OFF`.
+- Notes (verification 2026-02-26): rebuilt and reflashed after extending safeguards to `PERSIST OFF` long-session runtime behavior (build/flash PASS).
+- Notes (verification 2026-02-26): rebuilt and reflashed after persistence-safeguard runtime update (build/flash PASS).
+- Notes (restore marker): promoted current AI retune build as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260225_015949_online_tactical_ai_retune_golden.elf`
+- Notes (restore marker 2026-02-26): promoted persistence-default-OFF build as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260226_192033_persist_default_off_golden.elf`
+- Notes (restore marker 2026-02-26): promoted anti-drift-all-modes build as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260226_210104_anti_drift_all_modes_golden.elf`
+- Notes (restore marker 2026-02-26): promoted score-cap (`999`) + confetti + `30s` auto-reset build as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260226_211448_scorecap999_reset30s_golden.elf`
+- Notes (HUD update 2026-02-26): added bottom-row per-side `AVG` score labels, centered in each half around the net line, using running match-average points for left/right sides.
+- Notes (verification 2026-02-26): rebuilt after bottom-row avg-score HUD update (build PASS).
+- Notes (verification 2026-02-26): flashed board after AVG visibility fix (flash PASS).
+- Notes (HUD layout 2026-02-26): removed right-side `AVG` label, widened left/right numeric spacing by three character widths, and centered the two score numbers around the net.
+- Notes (verification 2026-02-26): rebuilt and reflashed after AVG label/spacing alignment update (build/flash PASS).
+- Notes (AVG reset 2026-02-26): `NEW GAME` from Settings now also clears AVG history counters, so both side AVG values reset to `000`.
+- Notes (verification 2026-02-26): rebuilt and reflashed after AVG reset-on-settings-clear update (build/flash PASS).
+- Notes (docs refresh 2026-02-26): updated project docs + GitHub README to include AVG reset-on-settings-clear behavior.
+- Notes (restore marker 2026-02-26): promoted AVG-reset-on-settings-clear firmware as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260226_223333_avg_reset_newgame_golden.elf`
+- Notes (restore tags 2026-02-26): moved `golden` and `failsafe` tags to latest `main` commit after docs/log sync.
+- Notes (serve AI 2026-02-26): serve reset now uses adaptive launch patterns (straight, single-axis angle, diagonal angle) biased away from the receiver paddle position.
+- Notes (verification 2026-02-26): rebuilt after AI serve variation update (build PASS).
+- Notes (HUD switch 2026-02-26): replaced bottom `AVG` scoreboard with per-side `WINS` counters (`000-000` format), keeping centered near-net layout.
+- Notes (settings clear 2026-02-26): `NEW GAME` now resets both score and `WINS` totals.
+- Notes (match options 2026-02-26): `MATCH` setting now offers `11`, `100`, and `1K` targets (`1K` maps to score target `999`).
+- Notes (verification 2026-02-26): rebuilt and reflashed after MATCH-option update (`11/100/1K`) (build/flash PASS).
+- Notes (default update 2026-02-26): firmware startup default for `MATCH` is now `100`.
+- Notes (verification 2026-02-26): rebuilt and reflashed after changing default `MATCH` to `100` (build/flash PASS).
+- Notes (docs refresh 2026-02-26): updated GitHub README and build/failsafe docs for `MATCH` options and default `100` startup behavior.
+- Notes (restore marker 2026-02-26): promoted default-`MATCH 100` firmware as Golden + Failsafe restore point.
+- Failsafe: `failsafe/edgeai_smart_pong_demo_cm33_core0_20260226_235942_match100_default_golden.elf`

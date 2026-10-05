@@ -1,0 +1,17 @@
+# Generated MCUX SDK west workspace (large, reproducible)
+mcuxsdk_ws/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Logs
+*.log
