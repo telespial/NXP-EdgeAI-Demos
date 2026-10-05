@@ -2,7 +2,7 @@
 
 Edge AI EV charging anomaly and mitigation demo for **FRDM-MCXN947 + LCD-PAR-S035**.
 
-![EV_charger_monitor](https://github.com/user-attachments/assets/a411539e-43e5-44ff-acb8-0f39ce5a6ef2)
+<img width="600" height="450" alt="550233730-a411539e-43e5-44ff-acb8-0f39ce5a6ef2" src="https://github.com/user-attachments/assets/269abf48-1677-4cfc-9fa0-7d14e3789cfa" />
 
 ## Scope
 - Runs a real-time on-device anomaly engine at `20 Hz` (`50 ms` sample period).
