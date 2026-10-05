@@ -2,6 +2,8 @@
 
 Firmware demo for an embedded CGM + insulin-pump UX on FRDM-MCXN947 with a model-assisted prediction layer, replay benchmarking, and safety-gated alerting.
 
+<img width="600" height="415" alt="554232660-1033010d-696f-45b3-b7d1-bed7aa6203d0" src="https://github.com/user-attachments/assets/c3bcbed2-1fbe-4cb9-9b09-bff4f1f4cd80" />
+
 This project introduces a new method of AI model generation delivered as a Visual Studio Code extension for embedded systems.
 
 The extension automatically builds, trains, and benchmarks multiple lightweight model types such as anomaly detection, decision logic enhancement, and predictive models. It then compares performance metrics and exports the optimal solution as a compact Embedded Intelligence Layer in production-ready C++.
