@@ -2,8 +2,7 @@
 
 This firmware drives a real-time 3D printer spool state UI from a TMF8828 8x8 ToF sensor on NXP FRDM-MCXN947.
 
-![printerspool](https://github.com/user-attachments/assets/2f95677c-f822-4699-b2b2-b92e28e70b93)
-
+<img width="600" height="447" alt="549988651-2f95677c-f822-4699-b2b2-b92e28e70b93" src="https://github.com/user-attachments/assets/34ee3355-54f3-4a81-9334-883287351b81" />
 
 Hardware target:
 - FRDM-MCXN947
