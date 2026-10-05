@@ -1,0 +1,6 @@
+name: edgeai_package_transport_anomaly_demo
+description: Package transport anomaly dashboard demo (FRDM-MCXN947)
+boards:
+  - frdmmcxn947
+toolchains:
+  - armgcc
