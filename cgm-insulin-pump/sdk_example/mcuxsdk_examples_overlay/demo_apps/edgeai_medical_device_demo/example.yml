@@ -1,0 +1,6 @@
+name: edgeai_medical_device_demo
+description: Medical device dashboard demo (FRDM-MCXN947)
+boards:
+  - frdmmcxn947
+toolchains:
+  - armgcc

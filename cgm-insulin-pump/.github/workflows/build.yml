@@ -1,0 +1,36 @@
+name: Build Checks
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  preflight-and-host-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run project preflight
+        run: ./scripts/preflight.sh
+
+      - name: Shell syntax check
+        run: |
+          bash -n scripts/preflight.sh
+          bash -n scripts/build.sh
+          bash -n scripts/flash.sh
+          bash -n scripts/flash_safe.sh
+          bash -n scripts/build_and_flash.sh
+          bash -n tools/build_frdmmcxn947.sh
+          bash -n tools/flash_frdmmcxn947.sh
+
+      - name: Host compile smoke test
+        run: |
+          cc -std=c11 -Wall -Wextra -I./src \
+            src/main.c \
+            src/medical_lcd_layout.c \
+            src/medical_display_stub.c \
+            -lm \
+            -o /tmp/edgeai_medical_lcd_layout_demo
+          /tmp/edgeai_medical_lcd_layout_demo

@@ -1,0 +1,28 @@
+# Local agent instructions
+AGENTS.md
+
+# Build outputs
+build/
+out/
+*.o
+*.a
+*.elf
+*.bin
+*.hex
+*.map
+
+# Tooling
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+
+# Runtime data
+captures/*.log
+failsafe/*.bin
+mcuxsdk_ws/
+mcuxsdk_ws/build*/
