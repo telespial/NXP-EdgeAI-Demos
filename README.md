@@ -8,6 +8,7 @@ This repository collects EdgeAI and embedded-intelligence demonstrations organiz
 | [CGM insulin pump](./cgm-insulin-pump) | Research/demo scope documented in project files | See project `STATUS.md`; not clinical approval |
 | [EV charger anomaly](./ev-charger-anomaly) | Anomaly-detection demonstration | See project `STATUS.md` |
 | [Package transport adaptive reasoning](./package-transport-adaptive-reasoning) | Package-transport intelligence demonstration | See project `STATUS.md` |
+| [Penguin temperature anomaly detector](https://github.com/telespial/Baby-Model-Zoo/blob/main/models/penguin-temperature-anomaly-detector/README.md) | Baby Model Zoo demonstration for detecting temperature anomalies with a small embedded model | See the model README |
 | [Smart Pong](./smart-pong) | Interactive EdgeAI demonstration | See project `STATUS.md` |
 | [Sphere](./sphere) | Demonstration project | See project `STATUS.md` |
 
