@@ -1,4 +1,3 @@
-# NXP-EdgeAI-Demos
 # NXP EdgeAI Demos
 
 This repository collects EdgeAI and embedded-intelligence demonstrations organized by project. Each child directory contains its own README and status record; those files are the source of truth for hardware, implementation state, and validation.
