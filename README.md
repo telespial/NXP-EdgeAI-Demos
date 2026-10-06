@@ -14,3 +14,7 @@ This repository collects EdgeAI and embedded-intelligence demonstrations organiz
 Choose a child project, read its status and prerequisites, and follow its project-specific instructions. This catalog does not add hardware, toolchain, measurement, or readiness claims that are not present in the child project.
 
 See [LICENSE](./LICENSE) for license terms.
+
+## How the examples relate
+
+The child projects show different EdgeAI integration patterns on FRDM-MCXN947: the ToF demo turns an 8x8 distance sensor into spool-state classifications; EV charger and package-transport projects document anomaly and warning paths; Smart Pong explores adaptive control beside a fixed baseline; and Sphere combines display rendering with accelerometer input. The CGM project is a research/demo platform and is not clinical software. See the [MRD specification](https://github.com/telespial/Machine-Readable-Datasheets-Specs) for structured hardware facts and the [EIL specification](https://github.com/telespial/Embedded-Intelligence-Layer-Specs) for bounded runtime integration.
